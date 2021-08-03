@@ -5,6 +5,17 @@ abstract class AppEvent {
 }
 
 class NavigateTo extends AppEvent {
-  final LocalState destinationState;
+  final AppState destinationState;
   const NavigateTo(this.destinationState);
 }
+
+class AppStarted extends AppEvent {}
+
+class AttemptToLogin extends AppEvent {
+  final userCredentials;
+  const AttemptToLogin(this.userCredentials) : super();
+}
+
+class AttemptToRegister extends AppEvent {}
+
+class AttemptToLogOut extends AppEvent {}

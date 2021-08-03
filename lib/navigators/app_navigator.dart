@@ -4,6 +4,8 @@ import 'package:vix_m/bloc/app_bloc.dart';
 import 'package:vix_m/states/app_states.dart';
 import 'package:vix_m/screens/authScreens/login_view.dart';
 import 'package:vix_m/screens/authScreens/signup_view.dart';
+import 'package:vix_m/screens/authScreens/splash_view.dart';
+import 'package:vix_m/screens/authScreens/welcome_view.dart';
 
 class AppNavigator extends StatelessWidget {
   @override
@@ -11,13 +13,10 @@ class AppNavigator extends StatelessWidget {
     return BlocBuilder<AppBloc, AppState>(builder: (context, state) {
       return Navigator(
         pages: [
-          // Show login
-          if (state.currentState == LocalState.state0)
-            MaterialPage(child: LoginView()),
-
-          // Show confirm sign up
-          if (state.currentState == LocalState.state1)
-            MaterialPage(child: SignUpView())
+          if (state is InitialState) MaterialPage(child: SplashView()),
+          if (state is NotLogged) MaterialPage(child: LoginView()),
+          if (state is AttemptingToLogin) MaterialPage(child: SignUpView()),
+          if (state is Logged) MaterialPage(child: WelcomeView(state.user))
         ],
         onPopPage: (route, result) => route.didPop(result),
       );
