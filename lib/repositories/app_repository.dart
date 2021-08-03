@@ -3,7 +3,7 @@ import 'package:vix_m/repositories/remote_repository.dart';
 class AppRepository {
   String user = "usuario";
   RemoteRepository remoteRepo = new RemoteRepository();
-
+  LocalRepository localRepo = new LocalRepository();
   getUser() {
     return user;
   }
