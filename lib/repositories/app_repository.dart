@@ -1,4 +1,5 @@
 import 'package:vix_m/repositories/remote_repository.dart';
+import 'package:vix_m/repositories/local_repository.dart';
 
 class AppRepository {
   String user = "usuario";
