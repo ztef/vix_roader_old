@@ -1,5 +1,6 @@
 import 'package:vix_m/repositories/remote_repository.dart';
 import 'package:vix_m/repositories/local_repository.dart';
+import 'package:vix_m/domain/user.dart';
 
 class AppRepository {
   String user = "usuario";
@@ -13,9 +14,13 @@ class AppRepository {
     user = newuser;
   }
 
-  Future<String> readLocalUser() async {
-    await Future.delayed(Duration(seconds: 5));
-    return '';
+  Future<User> readLocalUser() async {
+    User localUser = await localRepo.getUser();
+    return localUser;
+  }
+
+  Future<void> clearLocalUser() async {
+    await localRepo.removeUser();
   }
 
   Future<dynamic> login(authCredentials) async {
@@ -24,8 +29,25 @@ class AppRepository {
     var loginResult = await remoteRepo.login(authCredentials);
     // Si el resultado es true, guarda credenciales en LocalRepository
     if (loginResult['status'] == true) {
-    } else {}
+      var storeResult = await localRepo.saveUser(loginResult['user']);
+    } else {
+      var storeResult = await localRepo.removeUser();
+    }
 
     return loginResult;
+  }
+
+  Future<dynamic> register(authCredentials) async {
+    print('REPO: intentando registro con $authCredentials');
+
+    var registerResult = await remoteRepo.register(authCredentials);
+    // Si el resultado es true, guarda credenciales en LocalRepository
+    if (registerResult['status'] == true) {
+      var storeResult = await localRepo.saveUser(registerResult['user']);
+    } else {
+      var storeResult = await localRepo.removeUser();
+    }
+
+    return registerResult;
   }
 }

@@ -13,6 +13,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  var currentFocus;
 
   String userEmail = '';
   String userPassword = '';
@@ -29,6 +30,9 @@ class _LoginViewState extends State<LoginView> {
           child: BlocListener<AppBloc, AppState>(
             listener: (context, state) {
               if (state is LoginFailed) {
+                setState(() {
+                  _isLoading = false;
+                });
                 _showSnackBar(context, state.error);
               }
             },
@@ -41,7 +45,8 @@ class _LoginViewState extends State<LoginView> {
                   _emailTextField(),
                   //_phoneTextField(),
                   _passwordTextField(),
-                  _submitButton()
+                  _submitButton(),
+                  _registerLink(),
                 ],
               ),
             ),
@@ -116,6 +121,16 @@ class _LoginViewState extends State<LoginView> {
 
 */
 
+  Widget _registerLink() {
+    return TextButton(
+      child: Text("No te has registrado aún ?",
+          style: TextStyle(fontWeight: FontWeight.w300)),
+      onPressed: () {
+        context.read<AppBloc>().add(GoToRegister());
+      },
+    );
+  }
+
   Widget _submitButton() {
     return Builder(builder: (context) {
       return _isLoading
@@ -123,6 +138,7 @@ class _LoginViewState extends State<LoginView> {
           : ElevatedButton(
               child: Text('Submit'),
               onPressed: () {
+                unfocus();
                 if (_formKey.currentState!.validate()) {
                   setState(() {
                     _isLoading = true;
@@ -134,6 +150,14 @@ class _LoginViewState extends State<LoginView> {
               },
             );
     });
+  }
+
+  void unfocus() {
+    currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 
   void _showSnackBar(BuildContext context, String message) {

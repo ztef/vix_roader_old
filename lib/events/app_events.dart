@@ -16,6 +16,11 @@ class AttemptToLogin extends AppEvent {
   const AttemptToLogin(this.userCredentials) : super();
 }
 
-class AttemptToRegister extends AppEvent {}
+class GoToRegister extends AppEvent {}
+
+class AttemptToRegister extends AppEvent {
+  final userCredentials;
+  const AttemptToRegister(this.userCredentials) : super();
+}
 
 class AttemptToLogOut extends AppEvent {}

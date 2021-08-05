@@ -15,7 +15,8 @@ class AppNavigator extends StatelessWidget {
         pages: [
           if (state is InitialState) MaterialPage(child: SplashView()),
           if (state is NotLogged) MaterialPage(child: LoginView()),
-          if (state is AttemptingToLogin) MaterialPage(child: SignUpView()),
+          if (state is LoginFailed) MaterialPage(child: LoginView()),
+          if (state is NotRegistered) MaterialPage(child: SignUpView()),
           if (state is Logged) MaterialPage(child: WelcomeView(state.user))
         ],
         onPopPage: (route, result) => route.didPop(result),

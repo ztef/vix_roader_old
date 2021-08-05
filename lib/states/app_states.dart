@@ -25,10 +25,12 @@ class NotLogged extends AppState {}
 
 class AttemptingToLogin extends AppState {}
 
+class NotRegistered extends AppState {}
+
 class AttemptingToRegister extends AppState {}
 
 class Logged extends AppState {
-  final String user;
+  final String? user;
 
   Logged({
     this.user = '',
@@ -45,6 +47,12 @@ class LoginFailed extends AppState {
   final String error;
 
   LoginFailed(this.error);
+}
+
+class RegisterFailed extends AppState {
+  final String error;
+
+  RegisterFailed(this.error);
 }
 
 class Working extends AppState {}

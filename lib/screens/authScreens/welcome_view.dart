@@ -5,7 +5,7 @@ import 'package:vix_m/events/app_events.dart';
 //import 'package:vix_m/states/app_states.dart';
 
 class WelcomeView extends StatelessWidget {
-  final String user;
+  final String? user;
 
   WelcomeView(this.user) : super();
 

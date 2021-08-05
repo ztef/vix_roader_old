@@ -36,12 +36,11 @@ class RemoteRepository {
     return result;
   }
 
-  Future<Map<String, dynamic>> register(
-      String email, String password, String passwordConfirmation) async {
+  Future<Map<String, dynamic>> register(authCredentials) async {
     var result;
     final Map<String, dynamic> registrationData = {
-      'email': email,
-      'password': password,
+      'email': authCredentials['user'],
+      'password': authCredentials['password'],
       'returnSecureToken': 'true'
     };
 
