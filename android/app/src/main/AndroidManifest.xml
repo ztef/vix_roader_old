@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.vix_m">
+    package="com.example.vix_roader">
    <application
-        android:label="vix_m"
+        android:label="vix_roader"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
