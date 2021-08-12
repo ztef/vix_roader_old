@@ -1,4 +1,4 @@
-import 'package:vix_m/states/app_states.dart';
+import 'package:vix_roader/states/app_states.dart';
 
 abstract class AppEvent {
   const AppEvent();

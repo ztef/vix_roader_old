@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/auth_bloc.dart';
-import 'package:vix_m/navigators/auth_navigator.dart';
-import 'package:vix_m/repositories/auth_repository.dart';
-import 'package:vix_m/events/auth_events.dart';
+import 'package:vix_roader/bloc/auth_bloc.dart';
+import 'package:vix_roader/navigators/auth_navigator.dart';
+import 'package:vix_roader/repositories/auth_repository.dart';
+import 'package:vix_roader/events/auth_events.dart';
 
+/*
+     Visual Interaction Systems Corp
+     vix_roader
+     App para manejar bitácoras de transporte 
+
+
+*/
 void main() {
   runApp(MyApp());
 }

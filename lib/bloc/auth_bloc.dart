@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:vix_m/events/auth_events.dart';
-import 'package:vix_m/states/auth_states.dart';
-import 'package:vix_m/repositories/auth_repository.dart';
-import 'package:vix_m/domain/user.dart';
+import 'package:vix_roader/events/auth_events.dart';
+import 'package:vix_roader/states/auth_states.dart';
+import 'package:vix_roader/repositories/auth_repository.dart';
+import 'package:vix_roader/domain/user.dart';
 
 // VIX: Visual Interaction Systems Corp. 2021
 // Mobile Framework

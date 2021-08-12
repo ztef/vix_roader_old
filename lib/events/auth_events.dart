@@ -1,4 +1,4 @@
-import 'package:vix_m/states/auth_states.dart';
+import 'package:vix_roader/states/auth_states.dart';
 
 abstract class AuthEvent {
   const AuthEvent();
