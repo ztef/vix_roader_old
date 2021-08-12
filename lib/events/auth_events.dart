@@ -18,6 +18,8 @@ class AttemptToLogin extends AuthEvent {
 
 class GoToRegister extends AuthEvent {}
 
+class GoToLogin extends AuthEvent {}
+
 class AttemptToRegister extends AuthEvent {
   final userCredentials;
   const AttemptToRegister(this.userCredentials) : super();

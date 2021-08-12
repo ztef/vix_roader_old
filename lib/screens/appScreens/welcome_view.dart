@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vix_roader/bloc/auth_bloc.dart';
 import 'package:vix_roader/events/auth_events.dart';
+import 'package:vix_roader/repositories/auth_repository.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -9,16 +10,19 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var username = '';
+
+    username = RepositoryProvider.of<AuthRepository>(context).getUser().name;
     return Scaffold(
         appBar: AppBar(
-          title: Text('WELCOME'),
+          title: Text('BIENVENIDO'),
         ),
         drawer:
             Drawer(child: AppDrawer() // Populate the Drawer in the next step.
                 ),
         body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Bienvenido '),
+            Text('Bienvenido $username'),
             ElevatedButton(
               child: Text('Logout'),
               onPressed: () {

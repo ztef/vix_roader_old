@@ -59,6 +59,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         yield RegisterFailed(registerResult['message']['message']);
       }
+    } else if (event is GoToLogin) {
+      yield NotLogged();
     }
   }
 }

@@ -3,24 +3,28 @@ import 'package:vix_roader/repositories/local_repository.dart';
 import 'package:vix_roader/domain/user.dart';
 
 class AuthRepository {
-  String user = "usuario";
+  late User user;
+
   RemoteRepository remoteRepo = new RemoteRepository();
   LocalRepository localRepo = new LocalRepository();
+
   getUser() {
     return user;
   }
 
-  setUser(String newuser) {
+  setUser(User newuser) {
     user = newuser;
   }
 
   Future<User> readLocalUser() async {
     User localUser = await localRepo.getUser();
+    this.user = localUser;
     return localUser;
   }
 
   Future<void> clearLocalUser() async {
     await localRepo.removeUser();
+    user.clear();
   }
 
   Future<dynamic> login(authCredentials) async {
@@ -29,9 +33,11 @@ class AuthRepository {
     var loginResult = await remoteRepo.login(authCredentials);
     // Si el resultado es true, guarda credenciales en LocalRepository
     if (loginResult['status'] == true) {
-      var storeResult = await localRepo.saveUser(loginResult['user']);
+      user = await localRepo.saveUser(loginResult['user']);
     } else {
-      var storeResult = await localRepo.removeUser();
+      if (await localRepo.removeUser()) {
+        user.clear();
+      }
     }
 
     return loginResult;
@@ -43,9 +49,11 @@ class AuthRepository {
     var registerResult = await remoteRepo.register(authCredentials);
     // Si el resultado es true, guarda credenciales en LocalRepository
     if (registerResult['status'] == true) {
-      var storeResult = await localRepo.saveUser(registerResult['user']);
+      user = await localRepo.saveUser(registerResult['user']);
     } else {
-      var storeResult = await localRepo.removeUser();
+      if (await localRepo.removeUser()) {
+        user.clear();
+      }
     }
 
     return registerResult;

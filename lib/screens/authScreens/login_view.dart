@@ -41,9 +41,8 @@ class _LoginViewState extends State<LoginView> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 children: [
-                  //_nameTextField(),
+                  Image.asset('assets/logo.png'),
                   _emailTextField(),
-                  //_phoneTextField(),
                   _passwordTextField(),
                   _submitButton(),
                   _registerLink(),
@@ -123,7 +122,7 @@ class _LoginViewState extends State<LoginView> {
 
   Widget _registerLink() {
     return TextButton(
-      child: Text("No te has registrado aún ?",
+      child: Text("¿ No te has registrado aún ?",
           style: TextStyle(fontWeight: FontWeight.w300)),
       onPressed: () {
         context.read<AuthBloc>().add(GoToRegister());

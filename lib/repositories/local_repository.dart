@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:vix_roader/domain/user.dart';
 
 class LocalRepository {
-  Future<bool> saveUser(User user) async {
+  Future<User> saveUser(User user) async {
     final SharedPreferences? prefs = await SharedPreferences.getInstance();
 
     prefs?.setString("userId", user.userId!);
@@ -17,7 +17,7 @@ class LocalRepository {
     print("LOCAL_REPO: Guardando Usuario ");
     print(user.email);
 
-    return true;
+    return user;
   }
 
   Future<User> getUser() async {

@@ -18,6 +18,17 @@ class User {
       this.renewalToken = "",
       this.expires = 0});
 
+  clear() {
+    this.userId = "";
+    this.name = "";
+    this.email = "";
+    this.phone = "";
+    this.type = "";
+    this.token = "";
+    this.renewalToken = "";
+    this.expires = 0;
+  }
+
   factory User.fromJson(Map<String, dynamic> responseData) {
     return User(
         userId: responseData['localId'],
