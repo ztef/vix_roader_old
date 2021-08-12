@@ -1,6 +1,6 @@
-import 'package:vix_m/screens/appScreens/profile_view.dart';
-import 'package:vix_m/screens/appScreens/option1_view.dart';
-import 'package:vix_m/screens/appScreens/option2_view.dart';
+import 'package:vix_roader/screens/appScreens/profile_view.dart';
+import 'package:vix_roader/screens/appScreens/option1_view.dart';
+import 'package:vix_roader/screens/appScreens/option2_view.dart';
 
 class Routes {
   static const String profile = Profile.routeName;

@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'package:vix_m/domain/user.dart';
+import 'package:vix_roader/domain/user.dart';
 
 class LocalRepository {
   Future<bool> saveUser(User user) async {

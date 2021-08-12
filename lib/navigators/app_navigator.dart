@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/app_bloc.dart';
-import 'package:vix_m/states/app_states.dart';
-import 'package:vix_m/screens/appScreens/option1_view.dart';
-import 'package:vix_m/screens/appScreens/option2_view.dart';
-import 'package:vix_m/screens/appScreens/profile_view.dart';
-import 'package:vix_m/screens/appScreens/welcome_view.dart';
+import 'package:vix_roader/bloc/app_bloc.dart';
+import 'package:vix_roader/states/app_states.dart';
+import 'package:vix_roader/screens/appScreens/option1_view.dart';
+import 'package:vix_roader/screens/appScreens/option2_view.dart';
+import 'package:vix_roader/screens/appScreens/profile_view.dart';
+import 'package:vix_roader/screens/appScreens/welcome_view.dart';
 
 class AppNavigator extends StatelessWidget {
   @override

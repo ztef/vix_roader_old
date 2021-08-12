@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vix_m/screens/appScreens/app_drawer.dart';
+import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 
 class Option2 extends StatelessWidget {
   static const String routeName = '/option1';

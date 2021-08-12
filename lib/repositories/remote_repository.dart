@@ -1,5 +1,5 @@
-import 'package:vix_m/repositories/app_url.dart';
-import 'package:vix_m/domain/user.dart';
+import 'package:vix_roader/repositories/app_url.dart';
+import 'package:vix_roader/domain/user.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 

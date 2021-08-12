@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/auth_bloc.dart';
-import 'package:vix_m/events/auth_events.dart';
-import 'package:vix_m/states/auth_states.dart';
-import 'package:vix_m/utils/validators.dart';
+import 'package:vix_roader/bloc/auth_bloc.dart';
+import 'package:vix_roader/events/auth_events.dart';
+import 'package:vix_roader/states/auth_states.dart';
+import 'package:vix_roader/utils/validators.dart';
 
 class LoginView extends StatefulWidget {
   @override

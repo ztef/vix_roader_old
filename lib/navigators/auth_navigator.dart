@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/auth_bloc.dart';
-import 'package:vix_m/states/auth_states.dart';
-import 'package:vix_m/screens/authScreens/login_view.dart';
-import 'package:vix_m/screens/authScreens/signup_view.dart';
-import 'package:vix_m/screens/authScreens/splash_view.dart';
-import 'package:vix_m/navigators/app_wrapper.dart';
+import 'package:vix_roader/bloc/auth_bloc.dart';
+import 'package:vix_roader/states/auth_states.dart';
+import 'package:vix_roader/screens/authScreens/login_view.dart';
+import 'package:vix_roader/screens/authScreens/signup_view.dart';
+import 'package:vix_roader/screens/authScreens/splash_view.dart';
+import 'package:vix_roader/navigators/app_wrapper.dart';
 
 class AuthNavigator extends StatelessWidget {
   @override

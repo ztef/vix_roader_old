@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/auth_bloc.dart';
-import 'package:vix_m/events/auth_events.dart';
-import 'package:vix_m/screens/appScreens/app_drawer.dart';
+import 'package:vix_roader/bloc/auth_bloc.dart';
+import 'package:vix_roader/events/auth_events.dart';
+import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 
 class WelcomeView extends StatelessWidget {
   WelcomeView() : super();
