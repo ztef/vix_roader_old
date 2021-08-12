@@ -9,18 +9,10 @@ class NavigateTo extends AppEvent {
   const NavigateTo(this.destinationState);
 }
 
-class AppStarted extends AppEvent {}
+class AppStart extends AppEvent {}
 
-class AttemptToLogin extends AppEvent {
-  final userCredentials;
-  const AttemptToLogin(this.userCredentials) : super();
-}
+class AppEvent0 extends AppEvent {}
 
-class GoToRegister extends AppEvent {}
+class AppEvent1 extends AppEvent {}
 
-class AttemptToRegister extends AppEvent {
-  final userCredentials;
-  const AttemptToRegister(this.userCredentials) : super();
-}
-
-class AttemptToLogOut extends AppEvent {}
+class AppEvent2 extends AppEvent {}

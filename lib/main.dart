@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/app_bloc.dart';
-import 'package:vix_m/navigators/app_navigator.dart';
-import 'package:vix_m/repositories/app_repository.dart';
-import 'package:vix_m/events/app_events.dart';
+import 'package:vix_m/bloc/auth_bloc.dart';
+import 'package:vix_m/navigators/auth_navigator.dart';
+import 'package:vix_m/repositories/auth_repository.dart';
+import 'package:vix_m/events/auth_events.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,13 +25,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         home: MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => AppRepository()),
+        RepositoryProvider(create: (context) => AuthRepository()),
       ],
       child: BlocProvider(
-        create: (context) => AppBloc(
-          context.read<AppRepository>(),
-        )..add(AppStarted()),
-        child: AppNavigator(),
+        create: (context) => AuthBloc(
+          context.read<AuthRepository>(),
+        )..add(AuthStart()),
+        child: AuthNavigator(),
       ),
     ));
   }

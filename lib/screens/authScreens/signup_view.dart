@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/app_bloc.dart';
-import 'package:vix_m/events/app_events.dart';
-import 'package:vix_m/states/app_states.dart';
+import 'package:vix_m/bloc/auth_bloc.dart';
+import 'package:vix_m/events/auth_events.dart';
+import 'package:vix_m/states/auth_states.dart';
 import 'package:vix_m/utils/validators.dart';
 
 class SignUpView extends StatefulWidget {
@@ -28,7 +28,7 @@ class _SignUpViewState extends State<SignUpView> {
         body: SafeArea(
             child: Container(
           padding: EdgeInsets.all(20),
-          child: BlocListener<AppBloc, AppState>(
+          child: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is RegisterFailed) {
                 setState(() {
@@ -146,7 +146,7 @@ class _SignUpViewState extends State<SignUpView> {
       child: Text("Ya estás registrado ? Ingresa Aquí.",
           style: TextStyle(fontWeight: FontWeight.w300)),
       onPressed: () {
-        context.read<AppBloc>().add(GoToRegister());
+        context.read<AuthBloc>().add(GoToRegister());
       },
     );
   }
@@ -164,7 +164,7 @@ class _SignUpViewState extends State<SignUpView> {
                     _isLoading = true;
                   });
 
-                  context.read<AppBloc>().add(AttemptToRegister(
+                  context.read<AuthBloc>().add(AttemptToRegister(
                       {'user': userEmail, 'password': userPassword}));
                 }
               },

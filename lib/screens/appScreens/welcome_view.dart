@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/app_bloc.dart';
-import 'package:vix_m/events/app_events.dart';
-//import 'package:vix_m/states/app_states.dart';
+import 'package:vix_m/bloc/auth_bloc.dart';
+import 'package:vix_m/events/auth_events.dart';
+import 'package:vix_m/screens/appScreens/app_drawer.dart';
 
 class WelcomeView extends StatelessWidget {
-  final String? user;
-
-  WelcomeView(this.user) : super();
+  WelcomeView() : super();
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +13,16 @@ class WelcomeView extends StatelessWidget {
         appBar: AppBar(
           title: Text('WELCOME'),
         ),
+        drawer:
+            Drawer(child: AppDrawer() // Populate the Drawer in the next step.
+                ),
         body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Bienvenido $user'),
+            Text('Bienvenido '),
             ElevatedButton(
               child: Text('Logout'),
               onPressed: () {
-                BlocProvider.of<AppBloc>(context).add(AttemptToLogOut());
+                BlocProvider.of<AuthBloc>(context).add(AttemptToLogOut());
               },
             ),
           ]),

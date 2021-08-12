@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vix_m/bloc/app_bloc.dart';
-import 'package:vix_m/events/app_events.dart';
-import 'package:vix_m/states/app_states.dart';
+import 'package:vix_m/bloc/auth_bloc.dart';
+import 'package:vix_m/events/auth_events.dart';
+import 'package:vix_m/states/auth_states.dart';
 import 'package:vix_m/utils/validators.dart';
 
 class LoginView extends StatefulWidget {
@@ -27,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
         body: SafeArea(
             child: Container(
           padding: EdgeInsets.all(20),
-          child: BlocListener<AppBloc, AppState>(
+          child: BlocListener<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is LoginFailed) {
                 setState(() {
@@ -126,7 +126,7 @@ class _LoginViewState extends State<LoginView> {
       child: Text("No te has registrado aún ?",
           style: TextStyle(fontWeight: FontWeight.w300)),
       onPressed: () {
-        context.read<AppBloc>().add(GoToRegister());
+        context.read<AuthBloc>().add(GoToRegister());
       },
     );
   }
@@ -144,7 +144,7 @@ class _LoginViewState extends State<LoginView> {
                     _isLoading = true;
                   });
 
-                  context.read<AppBloc>().add(AttemptToLogin(
+                  context.read<AuthBloc>().add(AttemptToLogin(
                       {'user': userEmail, 'password': userPassword}));
                 }
               },
