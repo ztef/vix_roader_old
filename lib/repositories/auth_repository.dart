@@ -1,30 +1,35 @@
-import 'package:vix_roader/repositories/remote_repository.dart';
+import 'package:vix_roader/repositories/remote_auth_repository.dart';
 import 'package:vix_roader/repositories/local_repository.dart';
-import 'package:vix_roader/domain/user.dart';
+import 'package:vix_roader/domain/generic_domain_object.dart';
 
 class AuthRepository {
-  late User user;
+  late GenericDomainObject userCredentials;
 
-  RemoteRepository remoteRepo = new RemoteRepository();
+  RemoteAuthRepository remoteRepo = new RemoteAuthRepository();
   LocalRepository localRepo = new LocalRepository();
 
-  getUser() {
-    return user;
+  getUserCredentials() {
+    return userCredentials;
   }
 
-  setUser(User newuser) {
-    user = newuser;
+  setUserCredentials(GenericDomainObject newuserCredentials) {
+    userCredentials = newuserCredentials;
   }
 
-  Future<User> readLocalUser() async {
-    User localUser = await localRepo.getUser();
-    this.user = localUser;
-    return localUser;
+  setUserPhoto(userPhotoPath) {
+    userCredentials = userCredentials.updateField("imagePath", userPhotoPath);
+  }
+
+  Future<GenericDomainObject> readLocalUserCredentials() async {
+    GenericDomainObject localUserCredentials =
+        await localRepo.getLocalObject("user_credentials");
+    this.userCredentials = localUserCredentials;
+    return localUserCredentials;
   }
 
   Future<void> clearLocalUser() async {
-    await localRepo.removeUser();
-    user.clear();
+    await localRepo.removeLocalObject("user_credentials");
+    userCredentials.clear();
   }
 
   Future<dynamic> login(authCredentials) async {
@@ -33,10 +38,10 @@ class AuthRepository {
     var loginResult = await remoteRepo.login(authCredentials);
     // Si el resultado es true, guarda credenciales en LocalRepository
     if (loginResult['status'] == true) {
-      user = await localRepo.saveUser(loginResult['user']);
+      userCredentials = await localRepo.saveLocalObject(loginResult['user']);
     } else {
-      if (await localRepo.removeUser()) {
-        user.clear();
+      if (await localRepo.removeLocalObject("user_credentials")) {
+        userCredentials.clear();
       }
     }
 
@@ -49,10 +54,10 @@ class AuthRepository {
     var registerResult = await remoteRepo.register(authCredentials);
     // Si el resultado es true, guarda credenciales en LocalRepository
     if (registerResult['status'] == true) {
-      user = await localRepo.saveUser(registerResult['user']);
+      userCredentials = await localRepo.saveLocalObject(registerResult['user']);
     } else {
-      if (await localRepo.removeUser()) {
-        user.clear();
+      if (await localRepo.removeLocalObject("user_credentials")) {
+        userCredentials.clear();
       }
     }
 

@@ -1,61 +1,44 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'package:vix_roader/domain/user.dart';
+import 'dart:convert';
+import 'package:vix_roader/domain/generic_domain_object.dart';
 
 class LocalRepository {
-  Future<User> saveUser(User user) async {
+  Future<GenericDomainObject> saveLocalObject(
+      GenericDomainObject localObject) async {
     final SharedPreferences? prefs = await SharedPreferences.getInstance();
 
-    prefs?.setString("userId", user.userId!);
-    prefs?.setString("name", user.name!);
-    prefs?.setString("email", user.email!);
-    prefs?.setString("phone", user.phone!);
-    prefs?.setString("type", "");
-    prefs?.setString("token", user.token!);
-    prefs?.setString("renewalToken", user.renewalToken!);
+    prefs?.setString(localObject.objectId, json.encode(localObject.toJson()));
 
-    print("LOCAL_REPO: Guardando Usuario ");
-    print(user.email);
+    print("LOCAL_REPO: Guardando Objeto ");
+    print(localObject);
 
-    return user;
+    return localObject;
   }
 
-  Future<User> getUser() async {
+  Future<GenericDomainObject> getLocalObject(objectId) async {
     final SharedPreferences? prefs = await SharedPreferences.getInstance();
 
-    String? userId = prefs?.getString("userId");
-    String? name = prefs?.getString("name");
-    String? email = prefs?.getString("email");
-    String? phone = prefs?.getString("phone");
-    String? type = prefs?.getString("type");
-    String? token = prefs?.getString("token");
-    String? renewalToken = prefs?.getString("renewalToken");
+    String? data = prefs!.getString(objectId);
+    var payload;
 
-    return User(
-        userId: userId,
-        name: name,
-        email: email,
-        phone: phone,
-        type: type,
-        token: token,
-        renewalToken: renewalToken);
+    if (data == null) {
+      payload = {};
+    } else {
+      payload = json.decode(data)['payLoad'];
+    }
+
+    GenericDomainObject localObject = GenericDomainObject.fromJson(
+        {'objectId': objectId, 'payLoad': payload});
+
+    return localObject;
   }
 
-  Future<bool> removeUser() async {
+  Future<bool> removeLocalObject(objectId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    prefs.remove("name");
-    prefs.remove("email");
-    prefs.remove("phone");
-    prefs.remove("type");
-    prefs.remove("token");
+    prefs.remove(objectId);
 
     return true;
-  }
-
-  Future<String?> getToken(args) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString("token");
-    return token;
   }
 }

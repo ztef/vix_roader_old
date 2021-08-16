@@ -12,7 +12,9 @@ class WelcomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     var username = '';
 
-    username = RepositoryProvider.of<AuthRepository>(context).getUser().name;
+    username = RepositoryProvider.of<AuthRepository>(context)
+        .getUserCredentials()
+        .get('email');
     return Scaffold(
         appBar: AppBar(
           title: Text('BIENVENIDO'),

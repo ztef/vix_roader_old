@@ -4,7 +4,7 @@ import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
-class RemoteRepository {
+class RemoteAuthRepository {
   Future<Map<String, dynamic>> login(authCredentials) async {
     var result;
 
@@ -25,8 +25,9 @@ class RemoteRepository {
 
       var userData = responseData;
 
-      UserCredentials authUser =
-          GenericDomainObject.fromJson(userData) as UserCredentials;
+      UserCredentials authUser = GenericDomainObject.fromType(
+              {'objectId': 'user_credentials', 'payLoad': userData})
+          as UserCredentials;
 
       result = {'status': true, 'message': 'Successful', 'user': authUser};
     } else {

@@ -17,6 +17,7 @@ class AuthNavigator extends StatelessWidget {
           if (state is NotLogged) MaterialPage(child: LoginView()),
           if (state is LoginFailed) MaterialPage(child: LoginView()),
           if (state is NotRegistered) MaterialPage(child: SignUpView()),
+          if (state is RegisterFailed) MaterialPage(child: SignUpView()),
           if (state is Logged) MaterialPage(child: AppWrapper())
         ],
         onPopPage: (route, result) => route.didPop(result),

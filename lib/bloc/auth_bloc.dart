@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:vix_roader/events/auth_events.dart';
 import 'package:vix_roader/states/auth_states.dart';
 import 'package:vix_roader/repositories/auth_repository.dart';
-import 'package:vix_roader/domain/user.dart';
+import 'package:vix_roader/domain/domain_objects.dart';
 
 // VIX: Visual Interaction Systems Corp. 2021
 // Mobile Framework
@@ -30,20 +30,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print('BLOC : Inicia Aplicacion');
       print('BLOC : Leyendo Datos Locales');
 
-      final User user = await authRepo.readLocalUser();
+      var userCredentials = await authRepo.readLocalUserCredentials();
 
-      if (user.token == null) {
+      if (userCredentials.get('idToken') == null) {
         print('BLOC: No hay usuario registrado');
         yield NotLogged();
       } else {
-        var nombre = user.name;
+        var nombre = userCredentials.get('email');
         print('BLOC: Usuario Registrado: $nombre');
-        yield Logged(user: user.name);
+        yield Logged(user: userCredentials.get('email'));
       }
     } else if (event is AttemptToLogin) {
       var loginResult = await authRepo.login(event.userCredentials);
       if (loginResult['status'] == true) {
-        yield Logged(user: loginResult['user'].email);
+        yield Logged(user: loginResult['user'].get('email'));
       } else {
         yield LoginFailed(loginResult['message']['message']);
       }

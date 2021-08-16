@@ -8,42 +8,47 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          _createHeader(),
-          _createDrawerItem(
-              icon: Icons.contacts,
-              text: 'Profile',
-              onTap: () => () {
-                    BlocProvider.of<AppBloc>(context)
-                        .add(NavigateTo(AppState1()));
-                  }),
-          _createDrawerItem(
-              icon: Icons.event,
-              text: 'Opcion 1',
-              onTap: () => BlocProvider.of<AppBloc>(context)
-                  .add(NavigateTo(AppState2()))),
-          _createDrawerItem(
-              icon: Icons.note,
-              text: 'Opcion 2',
-              onTap: () => BlocProvider.of<AppBloc>(context)
-                  .add(NavigateTo(AppState0()))),
-          Divider(),
-          _createDrawerItem(icon: Icons.collections_bookmark, text: 'Steps'),
-          _createDrawerItem(icon: Icons.face, text: 'Authors'),
-          _createDrawerItem(
-              icon: Icons.account_box, text: 'Flutter Documentation'),
-          _createDrawerItem(icon: Icons.stars, text: 'Useful Links'),
-          Divider(),
-          _createDrawerItem(icon: Icons.bug_report, text: 'Report an issue'),
-          ListTile(
-            title: Text('0.0.1'),
-            onTap: () {},
-          ),
-        ],
-      ),
-    );
+        child: Container(
+            padding: EdgeInsets.zero,
+            child: Column(children: <Widget>[
+              Expanded(
+                  child: Column(children: <Widget>[
+                _createHeader(),
+                _createDrawerItem(
+                    icon: Icons.account_box,
+                    text: 'Mi Perfil',
+                    onTap: () => BlocProvider.of<AppBloc>(context)
+                        .add(NavigateTo(ProfileViewState()))),
+                _createDrawerItem(
+                    icon: Icons.event,
+                    text: 'Viaje Actual',
+                    onTap: () => BlocProvider.of<AppBloc>(context)
+                        .add(NavigateTo(AppState2()))),
+                _createDrawerItem(
+                    icon: Icons.event_available,
+                    text: 'Mis Viajes Realizados',
+                    onTap: () => BlocProvider.of<AppBloc>(context)
+                        .add(NavigateTo(AppState0()))),
+                Divider(),
+                _createDrawerItem(icon: Icons.add_alert, text: 'Alertas'),
+                _createDrawerItem(icon: Icons.exit_to_app, text: 'Salir'),
+                Divider(),
+                Container(
+                    child: Align(
+                        alignment: FractionalOffset.bottomCenter,
+                        child: Column(
+                          children: <Widget>[
+                            Divider(),
+                            ListTile(
+                                leading: Icon(Icons.settings),
+                                title: Text('Configuración')),
+                            ListTile(
+                                leading: Icon(Icons.help),
+                                title: Text('Acerca de'))
+                          ],
+                        ))),
+              ]))
+            ])));
   }
 
   Widget _createHeader() {
@@ -56,13 +61,21 @@ class AppDrawer extends StatelessWidget {
                 image: AssetImage('assets/drawer_header_background.png'))),
         child: Stack(children: <Widget>[
           Positioned(
-              bottom: 12.0,
+              bottom: 30.0,
               left: 16.0,
               child: Text("Viusal Roader",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
                       fontWeight: FontWeight.w500))),
+          Positioned(
+              bottom: 12.0,
+              left: 16.0,
+              child: Text("Bitácora Electrónica",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10.0,
+                      fontWeight: FontWeight.normal))),
         ]));
   }
 
