@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vix_roader/bloc/auth_bloc.dart';
 import 'package:vix_roader/events/auth_events.dart';
-import 'package:vix_roader/repositories/auth_repository.dart';
+import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -12,9 +12,8 @@ class WelcomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     var username = '';
 
-    username = RepositoryProvider.of<AuthRepository>(context)
-        .getUserCredentials()
-        .get('email');
+    username =
+        RepositoryProvider.of<AppRepository>(context).getUserData().get('name');
     return Scaffold(
         appBar: AppBar(
           title: Text('BIENVENIDO'),

@@ -21,7 +21,10 @@ class GenericDomainObject {
   }
 
   get(field) {
-    return payLoad[field];
+    if (payLoad[field] == null) {
+      return '?';
+    } else
+      return payLoad[field];
   }
 
   void set(key, value) {
@@ -50,6 +53,8 @@ class GenericDomainObject {
     var mapa = json['payLoad'];
 
     if (tipo == 'user_credentials') return UserCredentials(tipo, mapa);
+    if (tipo == 'user_data') return UserData(tipo, mapa);
+
     throw "$tipo objeto no reconocido.";
   }
 }

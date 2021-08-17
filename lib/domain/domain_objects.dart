@@ -4,3 +4,7 @@ class UserCredentials extends GenericDomainObject {
   UserCredentials(objectId, payLoad)
       : super(objectId: objectId, payLoad: payLoad);
 }
+
+class UserData extends GenericDomainObject {
+  UserData(objectId, payLoad) : super(objectId: objectId, payLoad: payLoad);
+}

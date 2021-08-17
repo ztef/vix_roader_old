@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:vix_roader/events/auth_events.dart';
 import 'package:vix_roader/states/auth_states.dart';
 import 'package:vix_roader/repositories/auth_repository.dart';
-import 'package:vix_roader/domain/domain_objects.dart';
 
 // VIX: Visual Interaction Systems Corp. 2021
 // Mobile Framework
@@ -27,8 +26,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield Logged();
       //}
     } else if (event is AuthStart) {
-      print('BLOC : Inicia Aplicacion');
-      print('BLOC : Leyendo Datos Locales');
+      print('Auth BLOC : Inicia Autenticación');
+      print('Auth BLOC : Leyendo Datos Locales');
 
       var userCredentials = await authRepo.readLocalUserCredentials();
 
@@ -37,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield NotLogged();
       } else {
         var nombre = userCredentials.get('email');
-        print('BLOC: Usuario Registrado: $nombre');
+        print('Auth BLOC: Usuario Registrado: $nombre');
         yield Logged(user: userCredentials.get('email'));
       }
     } else if (event is AttemptToLogin) {
@@ -55,7 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else if (event is AttemptToRegister) {
       var registerResult = await authRepo.register(event.userCredentials);
       if (registerResult['status'] == true) {
-        yield Logged(user: registerResult['user'].email);
+        yield Logged(user: registerResult['user'].get('email'));
       } else {
         yield RegisterFailed(registerResult['message']['message']);
       }

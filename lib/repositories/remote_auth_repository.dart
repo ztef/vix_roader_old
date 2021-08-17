@@ -58,8 +58,9 @@ class RemoteAuthRepository {
 
       var userData = responseData;
 
-      UserCredentials authUser =
-          GenericDomainObject.fromJson(userData) as UserCredentials;
+      UserCredentials authUser = GenericDomainObject.fromType(
+              {'objectId': 'user_credentials', 'payLoad': userData})
+          as UserCredentials;
 
       result = {'status': true, 'message': 'Successful', 'user': authUser};
     } else {

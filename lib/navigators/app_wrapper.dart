@@ -17,7 +17,7 @@ class AppWrapper extends StatelessWidget {
         child: BlocProvider(
           create: (context) => AppBloc(
             context.read<AppRepository>(),
-          )..add(AppStart()),
+          )..add(StartingApp()),
           child: AppNavigator(),
         ));
   }

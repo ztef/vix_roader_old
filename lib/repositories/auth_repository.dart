@@ -1,9 +1,9 @@
+import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:vix_roader/repositories/remote_auth_repository.dart';
 import 'package:vix_roader/repositories/local_repository.dart';
-import 'package:vix_roader/domain/generic_domain_object.dart';
 
 class AuthRepository {
-  late GenericDomainObject userCredentials;
+  late UserCredentials userCredentials;
 
   RemoteAuthRepository remoteRepo = new RemoteAuthRepository();
   LocalRepository localRepo = new LocalRepository();
@@ -12,17 +12,17 @@ class AuthRepository {
     return userCredentials;
   }
 
-  setUserCredentials(GenericDomainObject newuserCredentials) {
+  setUserCredentials(UserCredentials newuserCredentials) {
     userCredentials = newuserCredentials;
   }
 
   setUserPhoto(userPhotoPath) {
-    userCredentials = userCredentials.updateField("imagePath", userPhotoPath);
+    //userCredentials = userCredentials.updateField("imagePath", userPhotoPath);
   }
 
-  Future<GenericDomainObject> readLocalUserCredentials() async {
-    GenericDomainObject localUserCredentials =
-        await localRepo.getLocalObject("user_credentials");
+  Future<UserCredentials> readLocalUserCredentials() async {
+    UserCredentials localUserCredentials =
+        await localRepo.getLocalObject("user_credentials") as UserCredentials;
     this.userCredentials = localUserCredentials;
     return localUserCredentials;
   }
@@ -38,7 +38,10 @@ class AuthRepository {
     var loginResult = await remoteRepo.login(authCredentials);
     // Si el resultado es true, guarda credenciales en LocalRepository
     if (loginResult['status'] == true) {
-      userCredentials = await localRepo.saveLocalObject(loginResult['user']);
+      var opStatus = await localRepo.saveLocalObject(loginResult['user']);
+      if (opStatus) {
+        userCredentials = loginResult['user'];
+      }
     } else {
       if (await localRepo.removeLocalObject("user_credentials")) {
         userCredentials.clear();
@@ -54,7 +57,10 @@ class AuthRepository {
     var registerResult = await remoteRepo.register(authCredentials);
     // Si el resultado es true, guarda credenciales en LocalRepository
     if (registerResult['status'] == true) {
-      userCredentials = await localRepo.saveLocalObject(registerResult['user']);
+      var opStatus = await localRepo.saveLocalObject(registerResult['user']);
+      if (opStatus) {
+        userCredentials = registerResult['user'];
+      }
     } else {
       if (await localRepo.removeLocalObject("user_credentials")) {
         userCredentials.clear();

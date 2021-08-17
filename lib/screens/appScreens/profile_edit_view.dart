@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
-import 'package:vix_roader/repositories/auth_repository.dart';
+import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:vix_roader/widgets/profile_widget.dart';
 import 'package:vix_roader/widgets/text_field_widget.dart';
@@ -19,8 +19,7 @@ class ProfileEditView extends StatefulWidget {
 class _ProfileEditViewState extends State<ProfileEditView> {
   @override
   Widget build(BuildContext context) {
-    UserCredentials user =
-        RepositoryProvider.of<AuthRepository>(context).getUserCredentials();
+    UserData user = RepositoryProvider.of<AppRepository>(context).getUserData();
 
     return (Scaffold(
       appBar: AppBar(
@@ -46,35 +45,41 @@ class _ProfileEditViewState extends State<ProfileEditView> {
               final imageFile = File('${directory.path}/$name');
               final newImage = await File(image.path).copy(imageFile.path);
 
-              RepositoryProvider.of<AuthRepository>(context)
-                  .setUserPhoto(newImage.path);
-              //setState(() => user = user.copy(imagePath: newImage.path));
+              user.set('imagePath', newImage.path);
             },
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
             label: 'Nombre Completo',
             text: user.get('name')!,
-            onChanged: (name) {},
+            onChanged: (name) {
+              user.set('name', name);
+            },
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
             label: 'Teléfono',
-            text: user.get('email')!,
-            onChanged: (email) {},
+            text: user.get('phone')!,
+            onChanged: (phone) {
+              user.set('phone', phone);
+            },
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
             label: 'Fecha de Nacimiento',
-            text: user.get('email')!,
-            onChanged: (email) {},
+            text: user.get('birth')!,
+            onChanged: (birth) {
+              user.set('birth', birth);
+            },
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
             label: 'About',
             text: user.get('about')!,
             maxLines: 5,
-            onChanged: (about) {},
+            onChanged: (about) {
+              user.set('abour', about);
+            },
           ),
         ],
       ),

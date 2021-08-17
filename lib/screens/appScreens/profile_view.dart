@@ -6,7 +6,7 @@ import 'package:vix_roader/states/app_states.dart';
 
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 import 'package:vix_roader/widgets/profile_widget.dart';
-import 'package:vix_roader/repositories/auth_repository.dart';
+import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:vix_roader/widgets/numbers_widget.dart';
 import 'package:vix_roader/widgets/button_widget.dart';
@@ -16,9 +16,9 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserCredentials user;
+    UserData user;
 
-    user = RepositoryProvider.of<AuthRepository>(context).getUserCredentials();
+    user = RepositoryProvider.of<AppRepository>(context).getUserData();
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +41,7 @@ class ProfileView extends StatelessWidget {
   }
 }
 
-Widget buildName(UserCredentials user) => Column(
+Widget buildName(UserData user) => Column(
       children: [
         Text(
           user.get('name')!,
@@ -62,7 +62,7 @@ Widget buildUpdateButton(context) => ButtonWidget(
       },
     );
 
-Widget buildAbout(UserCredentials user) => Container(
+Widget buildAbout(UserData user) => Container(
       padding: EdgeInsets.symmetric(horizontal: 48),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

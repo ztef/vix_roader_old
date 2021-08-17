@@ -9,7 +9,9 @@ class NavigateTo extends AppEvent {
   const NavigateTo(this.destinationState);
 }
 
-class AppStart extends AppEvent {}
+class AttemptToGetUser extends AppEvent {}
+
+class StartingApp extends AppEvent {}
 
 class AppEvent0 extends AppEvent {}
 
