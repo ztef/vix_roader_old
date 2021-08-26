@@ -8,8 +8,39 @@ class AppRepository {
   RemoteRepository remoteRepo = new RemoteRepository();
   LocalRepository localRepo = new LocalRepository();
 
-  getUserData() {
+  getUserDataObject() {
     return userData;
+  }
+
+  Future<bool> updateUserData(data) async {
+    // Incorpora datos a objeto local en memoria
+    userData.updateRecord(data);
+    // Intenta Peristir Localmente
+    var result = await localRepo.saveLocalObject(userData);
+    if (result) {
+      result = await remoteRepo.updateRecord(userData);
+    }
+
+    return result;
+  }
+
+  Future<bool> getCatalogs() async {
+    // Intenta Leer Catalogos de la Aplicación
+
+    List<dynamic> catalogs = await remoteRepo.getCatalogs();
+
+    // Procesa cada Catálogo :
+    catalogs.forEach((element) {
+      var documentName = element['document'];
+      var documentData = element['collections'];
+
+      // Guarda localmente cada catalogo
+      localRepo.storeCatalog(documentName, documentData);
+    });
+
+    var result = true;
+
+    return result;
   }
 
   Future<UserData> readLocalUserData() async {
@@ -31,24 +62,5 @@ class AppRepository {
     userData.set('name', email);
     var result = await localRepo.saveLocalObject(userData);
     return result;
-  }
-
-  Future<dynamic> getUser(userCredentials) async {
-    //print('REPO: intentando login con $authCredentials');
-
-    var loginResult = await remoteRepo.login(userCredentials);
-    // Si el resultado es true, guarda credenciales en LocalRepository
-    if (loginResult['status'] == true) {
-      var opStatus = await localRepo.saveLocalObject(loginResult['user']);
-      if (opStatus) {
-        userCredentials = loginResult['user'];
-      }
-    } else {
-      if (await localRepo.removeLocalObject("user_credentials")) {
-        userCredentials.clear();
-      }
-    }
-
-    return loginResult;
   }
 }

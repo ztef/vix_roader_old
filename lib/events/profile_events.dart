@@ -4,7 +4,14 @@ abstract class ProfileEvent {
 
 class View extends ProfileEvent {}
 
+class LoadCatalogs extends ProfileEvent {}
+
 class Edit extends ProfileEvent {}
+
+class AttemptToUpdate extends ProfileEvent {
+  final profileData;
+  const AttemptToUpdate(this.profileData) : super();
+}
 
 class Stage extends ProfileEvent {}
 

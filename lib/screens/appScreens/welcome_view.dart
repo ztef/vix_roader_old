@@ -12,8 +12,9 @@ class WelcomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     var username = '';
 
-    username =
-        RepositoryProvider.of<AppRepository>(context).getUserData().get('name');
+    username = RepositoryProvider.of<AppRepository>(context)
+        .getUserDataObject()
+        .get('name');
     return Scaffold(
         appBar: AppBar(
           title: Text('BIENVENIDO'),

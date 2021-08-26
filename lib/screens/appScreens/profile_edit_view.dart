@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
+import 'package:vix_roader/events/profile_events.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vix_roader/bloc/profile_bloc.dart';
+import 'package:vix_roader/bloc/app_bloc.dart';
+import 'package:vix_roader/states/profile_states.dart';
+import 'package:vix_roader/states/app_states.dart';
+import 'package:vix_roader/events/app_events.dart';
 
 class ProfileEditView extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<ProfileBloc>(context);
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Profile '),
@@ -17,13 +26,29 @@ class ProfileEditView extends StatelessWidget {
                 ),
         body: FormBuilder(
           key: _formKey,
+          initialValue: bloc.getInitialValues(),
           child: Column(
             children: <Widget>[
-              _textFieldWidget(context, 'name'),
+              _textFieldWidget(
+                  context, 'name', 'Nombre Completo', TextInputType.name),
+              _textFieldWidget(
+                  context, 'phone', 'Teléfono', TextInputType.phone),
               //         _dateFieldWidget(context, 'birth'),
               //         _checkBoxFieldWidget(context, 'terms'),
               //         _imageFieldWidget(context, 'photo'),
-              _submitButtonWidget(context, _formKey),
+
+              BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+                if (state is EditState)
+                  return _submitButtonWidget(context, _formKey, bloc);
+                else if (state is AttemptingToUpdate)
+                  return CircularProgressIndicator();
+                else if (state is Updated) {
+                  return _okDialog(context);
+                } else {
+                  return _okDialog(context);
+                }
+              }),
+
               SizedBox(height: 20),
               _resetButtonWidget(context, _formKey),
             ],
@@ -35,20 +60,19 @@ class ProfileEditView extends StatelessWidget {
     print(val);
   }
 
-  Widget _textFieldWidget(context, _fieldName) {
+  Widget _textFieldWidget(context, _fieldName, label, inputType) {
     return FormBuilderTextField(
       name: _fieldName,
       decoration: InputDecoration(
-        labelText: 'Nombre Completo',
+        labelText: label,
       ),
       onChanged: _onChanged,
-      initialValue: 'Esteban Ortiz Oviedo Velasco',
+
       // valueTransformer: (text) => num.tryParse(text),
       validator: FormBuilderValidators.compose([
         FormBuilderValidators.required(context),
-        FormBuilderValidators.max(context, 70),
       ]),
-      keyboardType: TextInputType.name,
+      keyboardType: inputType,
     );
   }
 
@@ -58,7 +82,7 @@ class ProfileEditView extends StatelessWidget {
       // onChanged: _onChanged,
       inputType: InputType.date,
       decoration: InputDecoration(
-        labelText: 'Appointment Time',
+        labelText: 'Fecha de Nacimiento',
       ),
       //initialTime: TimeOfDay(hour: 8, minute: 0),
       initialValue: DateTime.now(),
@@ -75,11 +99,11 @@ class ProfileEditView extends StatelessWidget {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'I have read and agree to the ',
+              text: 'He leido y estoy de acuerdo con ',
               style: TextStyle(color: Colors.black),
             ),
             TextSpan(
-              text: 'Terms and Conditions',
+              text: 'los términos y condiciones.',
               style: TextStyle(color: Colors.blue),
             ),
           ],
@@ -101,17 +125,18 @@ class ProfileEditView extends StatelessWidget {
     );
   }
 
-  Widget _submitButtonWidget(context, _formKey) {
+  Widget _submitButtonWidget(context, _formKey, bloc) {
     return MaterialButton(
       color: Theme.of(context).accentColor,
       child: Text(
-        "Submit",
+        "Guardar",
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         _formKey.currentState!.save();
         if (_formKey.currentState!.validate()) {
           print(_formKey.currentState!.value);
+          bloc.add(AttemptToUpdate(_formKey.currentState.value));
         } else {
           print("validation failed");
         }
@@ -119,16 +144,33 @@ class ProfileEditView extends StatelessWidget {
     );
   }
 
-  Widget _resetButtonWidget(context, _formKey) {
-    return ElevatedButton(
-      onPressed: () {
-        // Reset form
-        _formKey.currentState!.reset();
+  Widget _okDialog(context) {
+    final bloc = BlocProvider.of<AppBloc>(context);
 
-        // Optional: unfocus keyboard
-        FocusScope.of(context).unfocus();
-      },
-      child: Text('Reset'),
+    return AlertDialog(
+      title: new Text('Registro Guardado'),
+      content: new Text('Sus datos han sido Enviados'),
+      actions: <Widget>[
+        new TextButton(
+          child: new Text('OK'),
+          onPressed: () {
+            bloc.add(NavigateTo(ProfileViewState()));
+          },
+        )
+      ],
     );
   }
+}
+
+Widget _resetButtonWidget(context, _formKey) {
+  return ElevatedButton(
+    onPressed: () {
+      // Reset form
+      _formKey.currentState!.reset();
+
+      // Optional: unfocus keyboard
+      FocusScope.of(context).unfocus();
+    },
+    child: Text('Reset'),
+  );
 }

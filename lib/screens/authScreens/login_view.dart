@@ -91,35 +91,6 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  /*
-  Widget _nameTextField() {
-    return TextFormField(
-      decoration: InputDecoration(icon: Icon(Icons.person), hintText: 'Name'),
-      validator: (v) {
-        if (v!.isValidName) {
-          return null;
-        } else {
-          return 'Please enter a valid name';
-        }
-      },
-    );
-  }
-
-  Widget _phoneTextField() {
-    return TextFormField(
-      decoration: InputDecoration(icon: Icon(Icons.phone), hintText: 'Phone'),
-      validator: (v) {
-        if (v!.isValidPhone) {
-          return null;
-        } else {
-          return 'Phone Number must be up to 11 digits';
-        }
-      },
-    );
-  }
-
-*/
-
   Widget _registerLink() {
     return TextButton(
       child: Text("¿ No te has registrado aún ?",

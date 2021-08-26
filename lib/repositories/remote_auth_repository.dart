@@ -1,5 +1,5 @@
 import 'package:vix_roader/domain/generic_domain_object.dart';
-import 'package:vix_roader/repositories/app_url.dart';
+import 'package:vix_roader/repositories/auth_url.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -15,7 +15,7 @@ class RemoteAuthRepository {
     };
 
     Response response = await post(
-      Uri.parse(AppUrl.login),
+      Uri.parse(AuthUrl.login),
       body: json.encode(loginData),
       headers: {'Content-Type': 'application/json'},
     );
@@ -48,7 +48,7 @@ class RemoteAuthRepository {
     };
 
     Response response = await post(
-      Uri.parse(AppUrl.register),
+      Uri.parse(AuthUrl.register),
       body: json.encode(registrationData),
       headers: {'Content-Type': 'application/json'},
     );

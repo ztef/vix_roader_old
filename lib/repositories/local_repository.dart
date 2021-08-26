@@ -44,6 +44,34 @@ class LocalRepository {
 
     return true;
   }
+
+  /*
+     Los Catalogos son documentos que pueden contener varias colecciones dentro.
+     la coleccion tipo lista contiene los elementos del catálogo desplegables
+     por el UI.
+ */
+  Future<bool> storeCatalog(catalogId, contents) async {
+    final SharedPreferences? prefs = await SharedPreferences.getInstance();
+
+    bool opStatus;
+
+    var listPosition =
+        contents.indexWhere((document) => document['collection'] == 'list');
+    List catalogItems = contents[listPosition]['documents'];
+    List<String> items = [];
+
+    catalogItems.forEach((element) {
+      var id = element['document'];
+      var desc = element['data']['desc'];
+      items.add(desc);
+    });
+
+    opStatus = (await prefs?.setStringList(catalogId, items))!;
+
+    print("LOCAL_REPO: Guardando Catalogo ");
+
+    return opStatus;
+  }
 }
 
 mixin Dynamic {}

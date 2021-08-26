@@ -17,8 +17,7 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserData user;
-
-    user = RepositoryProvider.of<AppRepository>(context).getUserData();
+    user = RepositoryProvider.of<AppRepository>(context).getUserDataObject();
 
     return Scaffold(
       appBar: AppBar(

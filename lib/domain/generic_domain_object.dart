@@ -27,6 +27,16 @@ class GenericDomainObject {
       return payLoad[field];
   }
 
+  getRecord() {
+    return payLoad;
+  }
+
+  updateRecord(data) {
+    data.forEach((key, value) {
+      payLoad[key] = value;
+    });
+  }
+
   void set(key, value) {
     payLoad[key] = value;
   }
