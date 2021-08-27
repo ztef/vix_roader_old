@@ -20,7 +20,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       print('APP BLOC : Leyendo Datos Locales');
 
       var userData = await appRepo.readLocalUserData();
-      if (userData.get('name') == null) {
+      if (userData.get('name') == '') {
         print('APP BLOC: No hay datos locales. Creando Registro');
 
         var result = await appRepo.createLocalUserData();

@@ -9,6 +9,7 @@ import 'package:vix_roader/bloc/app_bloc.dart';
 import 'package:vix_roader/states/profile_states.dart';
 import 'package:vix_roader/states/app_states.dart';
 import 'package:vix_roader/events/app_events.dart';
+import 'package:vix_roader/widgets/profile_widget.dart';
 
 class ProfileEditView extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -24,36 +25,44 @@ class ProfileEditView extends StatelessWidget {
         drawer:
             Drawer(child: AppDrawer() // Populate the Drawer in the next step.
                 ),
-        body: FormBuilder(
-          key: _formKey,
-          initialValue: bloc.getInitialValues(),
-          child: Column(
-            children: <Widget>[
-              _textFieldWidget(
-                  context, 'name', 'Nombre Completo', TextInputType.name),
-              _textFieldWidget(
-                  context, 'phone', 'Teléfono', TextInputType.phone),
-              //         _dateFieldWidget(context, 'birth'),
-              //         _checkBoxFieldWidget(context, 'terms'),
-              //         _imageFieldWidget(context, 'photo'),
+        body: ListView(children: [
+          ProfileWidget(
+              //imagePath: bloc.getInitialValues()['imagePath'],
+              imagePath: '',
+              onClicked: () {}),
+          FormBuilder(
+            key: _formKey,
+            initialValue: bloc.getInitialValues(),
+            child: Column(
+              children: <Widget>[
+                _imageFieldWidget(context, 'photo'),
+                _textFieldWidget(
+                    context, 'name', 'Nombre Completo', TextInputType.name),
+                _textFieldWidget(
+                    context, 'phone', 'Teléfono', TextInputType.phone),
+                //         _dateFieldWidget(context, 'birth'),
+                //         _checkBoxFieldWidget(context, 'terms'),
+                //         _imageFieldWidget(context, 'photo'),
 
-              BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-                if (state is EditState)
-                  return _submitButtonWidget(context, _formKey, bloc);
-                else if (state is AttemptingToUpdate)
-                  return CircularProgressIndicator();
-                else if (state is Updated) {
-                  return _okDialog(context);
-                } else {
-                  return _okDialog(context);
-                }
-              }),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                    builder: (context, state) {
+                  if (state is EditState)
+                    return _submitButtonWidget(context, _formKey, bloc);
+                  else if (state is AttemptingToUpdate)
+                    return CircularProgressIndicator();
+                  else if (state is Updated) {
+                    return _okDialog(context);
+                  } else {
+                    return _okDialog(context);
+                  }
+                }),
 
-              SizedBox(height: 20),
-              _resetButtonWidget(context, _formKey),
-            ],
-          ),
-        ));
+                SizedBox(height: 20),
+                _resetButtonWidget(context, _formKey),
+              ],
+            ),
+          )
+        ]));
   }
 
   _onChanged(val) {
@@ -120,7 +129,7 @@ class ProfileEditView extends StatelessWidget {
   Widget _imageFieldWidget(context, _fieldName) {
     return FormBuilderImagePicker(
       name: _fieldName,
-      decoration: const InputDecoration(labelText: 'Pick Photos'),
+      decoration: const InputDecoration(labelText: 'Fotografía '),
       maxImages: 1,
     );
   }

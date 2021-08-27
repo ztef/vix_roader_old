@@ -20,10 +20,10 @@ class AppDrawer extends StatelessWidget {
                     onTap: () => BlocProvider.of<AppBloc>(context)
                         .add(NavigateTo(ProfileViewState()))),
                 _createDrawerItem(
-                    icon: Icons.train_sharp, text: 'Mis Vehículos'),
+                    icon: Icons.travel_explore, text: 'Mis Viajes'),
                 _createDrawerItem(
-                    icon: Icons.card_travel,
-                    text: 'Mis Viajes',
+                    icon: Icons.calendar_view_month,
+                    text: 'Mi Bitacora',
                     onTap: () => BlocProvider.of<AppBloc>(context)
                         .add(NavigateTo(AppState2()))),
                 Divider(),

@@ -22,7 +22,7 @@ class GenericDomainObject {
 
   get(field) {
     if (payLoad[field] == null) {
-      return '?';
+      return '';
     } else
       return payLoad[field];
   }

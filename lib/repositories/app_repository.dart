@@ -60,6 +60,7 @@ class AppRepository {
     userData.set('email', email);
     userData.set('localId', localId);
     userData.set('name', email);
+
     var result = await localRepo.saveLocalObject(userData);
     return result;
   }
