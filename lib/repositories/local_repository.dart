@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:vix_roader/domain/generic_domain_object.dart';
 //import 'package:vix_roader/domain/domain_objects.dart';
@@ -9,9 +11,19 @@ class LocalRepository {
     final SharedPreferences? prefs = await SharedPreferences.getInstance();
 
     bool opStatus;
-
+    var js = localObject.toJson();
     opStatus = (await prefs?.setString(
-        localObject.objectId, json.encode(localObject.toJson())))!;
+        localObject.objectId,
+        json.encode(js, toEncodable: (v) {
+          if (v is File) {
+            //final appDir = await getApplicationDocumentsDirectory();
+            //final fileName = '_photo.png';
+            //final savedImage = await v.copy('${appDir.path}/$fileName');
+
+            return {};
+          } else
+            return v.toJson();
+        })))!;
 
     print("LOCAL_REPO: Guardando Objeto ");
     print(localObject);

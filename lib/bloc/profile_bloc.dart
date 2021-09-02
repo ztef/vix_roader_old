@@ -28,6 +28,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }
       } else if (event is Edit) {
         yield EditState();
+      } else if (event is LoadNewPhoto) {
+        yield NewPhoto();
       } else {
         if (event is AttemptToUpdate) {
           yield AttemptingToUpdate();

@@ -126,13 +126,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  form_builder_image_picker:
-    dependency: "direct main"
-    description:
-      name: form_builder_image_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0-nullsafety.0"
   http:
     dependency: "direct main"
     description:
@@ -148,12 +141,12 @@ packages:
     source: hosted
     version: "4.0.0"
   image_picker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.5+4"
+    version: "0.8.3+3"
   image_picker_for_web:
     dependency: transitive
     description:

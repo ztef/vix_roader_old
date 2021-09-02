@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 class ProfileWidget extends StatelessWidget {
   final String? imagePath;
@@ -31,21 +34,31 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = NetworkImage(imagePath!);
+    Future<FileImage> image = _getImage();
 
     return ClipOval(
-      child: Material(
-        //color: (image.url == "") ? Colors.black : Colors.transparent,
-        color: Colors.black,
-        child: Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 128,
-          height: 128,
-          child: InkWell(onTap: onClicked),
-        ),
+        child: Material(
+      //color: (image.url == "") ? Colors.black : Colors.transparent,
+      color: Colors.transparent,
+      child: FutureBuilder(
+        future: image,
+        builder: (BuildContext context, AsyncSnapshot<FileImage> image) {
+          if (image.hasData) {
+            return Ink.image(
+              ///data/user/0/com.example.vix_roader/app_flutter/foto.jpg
+              image: image.data!,
+              key: UniqueKey(),
+              fit: BoxFit.cover,
+              width: 128,
+              height: 128,
+              child: InkWell(onTap: onClicked),
+            );
+          } else {
+            return new Container();
+          }
+        },
       ),
-    );
+    ));
   }
 
   Widget buildEditIcon(Color color) => buildCircle(
@@ -74,4 +87,30 @@ class ProfileWidget extends StatelessWidget {
           child: child,
         ),
       );
+}
+
+Future<FileImage> _getImage() async {
+  imageCache?.clear();
+
+  Directory appDir = await _getAppDirectory();
+  String appDocumentsPath = appDir.path; // 2
+  String filePath = '$appDocumentsPath/foto.jpg'; // 3
+  var imageFile = File(filePath);
+
+  if (await File(filePath).exists()) {
+    print("File exists");
+  } else {
+    print("File don't exists");
+  }
+
+  FileImage fi = FileImage(imageFile);
+
+  //fi.evict();
+
+  return fi;
+}
+
+Future<Directory> _getAppDirectory() async {
+  var appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
+  return appDocumentsDirectory;
 }

@@ -14,6 +14,8 @@ class EditCompleted extends ProfileState {}
 
 class AttemptingToUpdate extends ProfileState {}
 
+class NewPhoto extends ProfileState {}
+
 class Updated extends ProfileState {}
 
 class UpdateError extends ProfileState {}

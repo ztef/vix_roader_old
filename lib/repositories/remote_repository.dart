@@ -1,6 +1,7 @@
 import 'package:vix_roader/domain/generic_domain_object.dart';
 import 'package:vix_roader/repositories/app_url.dart';
-import 'package:vix_roader/domain/domain_objects.dart';
+//import 'package:vix_roader/domain/domain_objects.dart';
+import 'dart:io';
 
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -13,7 +14,12 @@ class RemoteRepository {
 
     Response response = await post(
       Uri.parse(AppUrl.update),
-      body: json.encode(registrationData),
+      body: json.encode(registrationData, toEncodable: (v) {
+        if (v is File)
+          return {};
+        else
+          return v.toJson();
+      }),
       headers: {'Content-Type': 'application/json'},
     );
 

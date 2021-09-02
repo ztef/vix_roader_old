@@ -8,6 +8,8 @@ class LoadCatalogs extends ProfileEvent {}
 
 class Edit extends ProfileEvent {}
 
+class LoadNewPhoto extends ProfileEvent {}
+
 class AttemptToUpdate extends ProfileEvent {
   final profileData;
   const AttemptToUpdate(this.profileData) : super();

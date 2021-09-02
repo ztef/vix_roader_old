@@ -33,6 +33,7 @@ class ProfileNavigator extends StatelessWidget {
           if (state is Updated) MaterialPage(child: ProfileEditView()),
           if (state is EditCompleted) MaterialPage(child: ProfileEditView()),
           if (state is ViewState) MaterialPage(child: ProfileEditView()),
+          if (state is NewPhoto) MaterialPage(child: ProfileEditView()),
         ],
         onPopPage: (route, result) => route.didPop(result),
       );
