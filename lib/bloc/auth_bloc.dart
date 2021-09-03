@@ -19,13 +19,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // you can yield* instead of the yield, but make sure your
     // method signature returns Stream<NavDrawerState> and is async*
 
-    if (event is NavigateTo) {
+    /*if (event is NavigateTo) {
       // only route to a new location if the new location is different
       //if (event.destinationState != state.currentState) {
       //yield AppState(event.destinationState);
       yield Logged();
       //}
-    } else if (event is AuthStart) {
+    } else 
+    */
+    if (event is AuthStart) {
       print('Auth BLOC : Inicia Autenticación');
       print('Auth BLOC : Leyendo Datos Locales');
 

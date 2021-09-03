@@ -4,10 +4,11 @@ abstract class AuthEvent {
   const AuthEvent();
 }
 
-class NavigateTo extends AuthEvent {
+/*class NavigateTo extends AuthEvent {
   final AuthState destinationState;
   const NavigateTo(this.destinationState);
 }
+*/
 
 class AuthStart extends AuthEvent {}
 

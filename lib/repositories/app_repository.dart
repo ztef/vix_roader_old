@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vix_roader/repositories/remote_repository.dart';
 import 'package:vix_roader/repositories/local_repository.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
@@ -60,8 +65,42 @@ class AppRepository {
     userData.set('email', email);
     userData.set('localId', localId);
     userData.set('name', email);
+    userData.set('phone', '');
 
     var result = await localRepo.saveLocalObject(userData);
     return result;
+  }
+
+  static Future<FileImage> getLocalImage() async {
+    imageCache?.clear();
+
+    Directory appDir = await _getAppDirectory();
+    String appDocumentsPath = appDir.path; // 2
+    String filePath = '$appDocumentsPath/foto.jpg'; // 3
+    var imageFile = File(filePath);
+
+    if (await File(filePath).exists()) {
+      print("File exists");
+    } else {
+      print("File don't exists");
+    }
+
+    FileImage fi = FileImage(imageFile);
+
+    return fi;
+  }
+
+  static Future<void> saveLocalImage(XFile image) async {
+    Directory appDocumentsDirectory =
+        await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/foto.jpg'; // 3
+
+    return image.saveTo(filePath);
+  }
+
+  static Future<Directory> _getAppDirectory() async {
+    var appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
+    return appDocumentsDirectory;
   }
 }

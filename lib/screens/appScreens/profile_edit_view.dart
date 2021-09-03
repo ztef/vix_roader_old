@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-//import 'package:form_builder_image_picker/form_builder_image_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:vix_roader/events/profile_events.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vix_roader/bloc/profile_bloc.dart';
 import 'package:vix_roader/bloc/app_bloc.dart';
 import 'package:vix_roader/states/profile_states.dart';
 import 'package:vix_roader/states/app_states.dart';
 import 'package:vix_roader/events/app_events.dart';
-import 'package:vix_roader/widgets/profile_widget.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:vix_roader/widgets/profile_photo_widget.dart';
 
 class ProfileEditView extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -23,16 +20,17 @@ class ProfileEditView extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Profile '),
+          title: Text('Mi Perfil '),
         ),
-        drawer:
-            Drawer(child: AppDrawer() // Populate the Drawer in the next step.
-                ),
+        drawer: Drawer(child: AppDrawer()),
         body: ListView(children: [
           BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
             if ((state is NewPhoto) || (state is EditState)) {
-              return (ProfileWidget(
-                imagePath: '',
+              return (ProfilePhotoWidget(
+                imagePath: 'foto.jpg',
+                isEdit: true,
+                bloc: bloc,
+                /*
                 onClicked: () {
                   showDialog(
                       context: context,
@@ -40,6 +38,7 @@ class ProfileEditView extends StatelessWidget {
                         return photoDialog(context, bloc);
                       });
                 },
+                */
               ));
             } else
               return Container();
@@ -140,16 +139,6 @@ class ProfileEditView extends StatelessWidget {
     );
   }
 
-/*
-  Widget _imageFieldWidget(context, _fieldName) {
-    return FormBuilderImagePicker(
-      name: _fieldName,
-      decoration: const InputDecoration(labelText: 'Fotografía '),
-      maxImages: 1,
-    );
-  }
-*/
-
   Widget _submitButtonWidget(context, _formKey, bloc) {
     return MaterialButton(
       color: Theme.of(context).accentColor,
@@ -198,38 +187,4 @@ Widget _resetButtonWidget(context, _formKey) {
     },
     child: Text('Reset'),
   );
-}
-
-SimpleDialog photoDialog(context, bloc) {
-  return SimpleDialog(title: Text("Tomar Fotografía"), children: <Widget>[
-    SimpleDialogOption(
-      onPressed: () async {
-        Navigator.pop(context); //close the dialog box
-        _getImage(ImageSource.gallery, bloc);
-      },
-      child: const Text('Seleccionar de Galería'),
-    ),
-    SimpleDialogOption(
-      onPressed: () async {
-        Navigator.pop(context); //close the dialog box
-        _getImage(ImageSource.camera, bloc);
-      },
-      child: const Text('Tomar Foto Nueva'),
-    ),
-  ]);
-}
-
-_getImage(ImageSource src, bloc) async {
-  final _picker = ImagePicker();
-
-  var img = await _picker.pickImage(source: src);
-  print('GUARDADO DE FOTO');
-  print(img!.path);
-
-  Directory appDocumentsDirectory =
-      await getApplicationDocumentsDirectory(); // 1
-  String appDocumentsPath = appDocumentsDirectory.path; // 2
-  String filePath = '$appDocumentsPath/foto.jpg'; // 3
-
-  img.saveTo(filePath).then((value) => bloc.add(LoadNewPhoto()));
 }

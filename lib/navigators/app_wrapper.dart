@@ -21,4 +21,18 @@ class AppWrapper extends StatelessWidget {
           child: AppNavigator(),
         ));
   }
+
+  /*@override
+  Widget build(BuildContext context) {
+    return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(create: (context) => AppRepository()),
+        ],
+        child: BlocProvider(
+          create: (context) => AppBloc(
+            context.read<AppRepository>(),
+          )..add(StartingApp()),
+          child: AppNavigator(),
+        ));
+  } */
 }

@@ -6,7 +6,9 @@ class ProfileEditState extends AppState {}
 
 class LoadingData extends AppState {}
 
-class AppState0 extends AppState {}
+class HomeState extends AppState {}
+
+class QuitState extends AppState {}
 
 class AppState1 extends AppState {}
 
