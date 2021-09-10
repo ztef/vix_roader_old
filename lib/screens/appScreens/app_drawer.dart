@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vix_roader/bloc/app_bloc.dart';
-import 'package:vix_roader/bloc/auth_bloc.dart';
 import 'package:vix_roader/events/app_events.dart';
-import 'package:vix_roader/events/auth_events.dart';
 import 'package:vix_roader/states/app_states.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -103,26 +101,5 @@ class AppDrawer extends StatelessWidget {
       ),
       onTap: onTap,
     );
-  }
-
-  SimpleDialog _tryToQuitDialog(context) {
-    print('DRAWER : Quieren salir');
-    return SimpleDialog(
-        title: Text("Salir de la Aplicación"),
-        children: <Widget>[
-          SimpleDialogOption(
-            onPressed: () {
-              Navigator.pop(context); //close the dialog box
-              BlocProvider.of<AuthBloc>(context).add(AttemptToLogOut());
-            },
-            child: const Text('Salir'),
-          ),
-          SimpleDialogOption(
-            onPressed: () {
-              Navigator.pop(context); //close the dialog box
-            },
-            child: const Text('Cancelar'),
-          ),
-        ]);
   }
 }

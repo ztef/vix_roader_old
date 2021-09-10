@@ -9,6 +9,7 @@ import 'package:vix_roader/bloc/app_bloc.dart';
 import 'package:vix_roader/states/profile_states.dart';
 import 'package:vix_roader/states/app_states.dart';
 import 'package:vix_roader/events/app_events.dart';
+import 'package:vix_roader/widgets/form_widgets.dart';
 import 'package:vix_roader/widgets/profile_photo_widget.dart';
 
 class ProfileEditView extends StatelessWidget {
@@ -49,9 +50,9 @@ class ProfileEditView extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 //_imageFieldWidget(context, 'foto'),
-                _textFieldWidget(
+                textFieldWidget(
                     context, 'name', 'Nombre Completo', TextInputType.name),
-                _textFieldWidget(
+                textFieldWidget(
                     context, 'phone', 'Teléfono', TextInputType.phone),
                 //         _dateFieldWidget(context, 'birth'),
                 //         _checkBoxFieldWidget(context, 'terms'),
@@ -59,9 +60,10 @@ class ProfileEditView extends StatelessWidget {
 
                 BlocBuilder<ProfileBloc, ProfileState>(
                     builder: (context, state) {
-                  if ((state is NewPhoto) || (state is EditState))
-                    return _submitButtonWidget(context, _formKey, bloc);
-                  else if (state is AttemptingToUpdate)
+                  if ((state is NewPhoto) || (state is EditState)) {
+                    return submitButtonWidget('Guardar', context, _formKey,
+                        (data) => {bloc.add(AttemptToUpdate(data))});
+                  } else if (state is AttemptingToUpdate)
                     return CircularProgressIndicator();
                   else if (state is Updated) {
                     return _okDialog(context);
@@ -78,26 +80,6 @@ class ProfileEditView extends StatelessWidget {
         ]));
   }
 
-  _onChanged(val) {
-    print(val);
-  }
-
-  Widget _textFieldWidget(context, _fieldName, label, inputType) {
-    return FormBuilderTextField(
-      name: _fieldName,
-      decoration: InputDecoration(
-        labelText: label,
-      ),
-      onChanged: _onChanged,
-
-      // valueTransformer: (text) => num.tryParse(text),
-      validator: FormBuilderValidators.compose([
-        FormBuilderValidators.required(context),
-      ]),
-      keyboardType: inputType,
-    );
-  }
-
   Widget _dateFieldWidget(context, _fieldName) {
     return FormBuilderDateTimePicker(
       name: _fieldName,
@@ -109,52 +91,6 @@ class ProfileEditView extends StatelessWidget {
       //initialTime: TimeOfDay(hour: 8, minute: 0),
       initialValue: DateTime.now(),
       enabled: true,
-    );
-  }
-
-  Widget _checkBoxFieldWidget(context, _fieldName) {
-    return FormBuilderCheckbox(
-      name: _fieldName,
-      initialValue: false,
-      onChanged: _onChanged,
-      title: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'He leido y estoy de acuerdo con ',
-              style: TextStyle(color: Colors.black),
-            ),
-            TextSpan(
-              text: 'los términos y condiciones.',
-              style: TextStyle(color: Colors.blue),
-            ),
-          ],
-        ),
-      ),
-      validator: FormBuilderValidators.equal(
-        context,
-        true,
-        errorText: 'You must accept terms and conditions to continue',
-      ),
-    );
-  }
-
-  Widget _submitButtonWidget(context, _formKey, bloc) {
-    return MaterialButton(
-      color: Theme.of(context).accentColor,
-      child: Text(
-        "Guardar",
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {
-        _formKey.currentState!.save();
-        if (_formKey.currentState!.validate()) {
-          print(_formKey.currentState!.value);
-          bloc.add(AttemptToUpdate(_formKey.currentState.value));
-        } else {
-          print("validation failed");
-        }
-      },
     );
   }
 

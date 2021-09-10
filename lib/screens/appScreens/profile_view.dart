@@ -10,6 +10,7 @@ import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:vix_roader/widgets/numbers_widget.dart';
 import 'package:vix_roader/widgets/button_widget.dart';
+import 'package:vix_roader/widgets/user_data_widget.dart';
 
 class ProfileView extends StatelessWidget {
   static const String routeName = '/profile';
@@ -28,7 +29,7 @@ class ProfileView extends StatelessWidget {
       body: ListView(children: [
         ProfilePhotoWidget(imagePath: 'foto.jpg', isEdit: false, bloc: null),
         const SizedBox(height: 24),
-        buildName(user),
+        userDataWidget(user),
         const SizedBox(height: 24),
         Center(child: buildUpdateButton(context)),
         const SizedBox(height: 24),
@@ -39,20 +40,6 @@ class ProfileView extends StatelessWidget {
     );
   }
 }
-
-Widget buildName(UserData user) => Column(
-      children: [
-        Text(
-          user.get('name')!,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          user.get('email')!,
-          style: TextStyle(color: Colors.grey),
-        )
-      ],
-    );
 
 Widget buildUpdateButton(context) => ButtonWidget(
       text: 'Actualizar Perfil',

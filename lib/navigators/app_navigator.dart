@@ -8,7 +8,7 @@ import 'package:vix_roader/screens/appScreens/quit_view.dart';
 import 'package:vix_roader/screens/appScreens/profile_view.dart';
 import 'package:vix_roader/navigators/profile_navigator.dart';
 import 'package:vix_roader/screens/appScreens/app_loading.dart';
-import 'package:vix_roader/screens/appScreens/welcome_view.dart';
+import 'package:vix_roader/navigators/op_wrapper.dart';
 
 class AppNavigator extends StatelessWidget {
   @override
@@ -17,7 +17,7 @@ class AppNavigator extends StatelessWidget {
       return Navigator(
         pages: [
           if (state is LoadingData) MaterialPage(child: LoadingView()),
-          if (state is HomeState) MaterialPage(child: WelcomeView()),
+          if (state is HomeState) MaterialPage(child: OpWrapper()),
           if (state is ProfileViewState) MaterialPage(child: ProfileView()),
           if (state is ProfileEditState) MaterialPage(child: ProfileWrapper()),
           if (state is AppState1) MaterialPage(child: Option1()),
