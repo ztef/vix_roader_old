@@ -64,7 +64,7 @@ class GenericDomainObject {
 
     if (tipo == 'user_credentials') return UserCredentials(tipo, mapa);
     if (tipo == 'user_data') return UserData(tipo, mapa);
-    if (tipo == 'user_status') return UserStatus(tipo, mapa);
+    if (tipo == 'trip_status') return TripStatus(tipo, mapa);
     throw "$tipo objeto no reconocido.";
   }
 }

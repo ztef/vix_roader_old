@@ -3,9 +3,9 @@ abstract class OpState {}
 class IdleState extends OpState {}
 
 class TravelState extends OpState {
-  final tripData;
+  final tripStatus;
 
-  TravelState(this.tripData);
+  TravelState(this.tripStatus);
 }
 
 class AccidentState extends OpState {}

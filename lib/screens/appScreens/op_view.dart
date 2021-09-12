@@ -9,6 +9,7 @@ import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 import 'package:vix_roader/widgets/box_container_widget.dart';
 import 'package:vix_roader/widgets/form_widgets.dart';
 import 'package:vix_roader/widgets/profile_photo_widget.dart';
+import 'package:vix_roader/widgets/trip_status_widget.dart';
 import 'package:vix_roader/widgets/user_data_widget.dart';
 import 'package:vix_roader/widgets/user_status_widget.dart';
 
@@ -46,6 +47,12 @@ class OpPanel extends StatelessWidget {
           // Tarjeta de Estado : En Viaje/No en Viaje.
           userStatusWidget(state: state),
 
+          // Estado del Viaje
+          tripStatusWidget(
+              context: context,
+              state: state,
+              bloc: BlocProvider.of<OpBloc>(context)),
+
           // Tarjeta de Estadísticas
           boxContainer(
               Text('Viajes Registrados : 32 , Horas de conducción : 245')),
@@ -59,16 +66,14 @@ class OpPanel extends StatelessWidget {
 _nextAction(context, state) {
   if (state is IdleState) {
     return FloatingActionButton.extended(
-        onPressed: () => {
-              modalFullScreen(context, BlocProvider.of<OpBloc>(context))
-              //BlocProvider.of<OpBloc>(context).add(StartTrip())
-            },
-        label: Text('Iniciar Viaje'),
+        onPressed: () => {modalFullScreen(context, startTravelDataDialog)},
+        label: Text('Nuevo Viaje'),
         icon: Icon(Icons.navigation));
   } else if (state is TravelState) {
     return FloatingActionButton.extended(
-        onPressed: () => {BlocProvider.of<OpBloc>(context).add(StopTrip())},
-        label: Text('Detener Viaje'),
+        onPressed: () =>
+            {stopTripDialog(context, BlocProvider.of<OpBloc>(context))},
+        label: Text('Terminar el Viaje'),
         icon: Icon(Icons.navigation));
   }
 }

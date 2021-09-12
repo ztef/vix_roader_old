@@ -9,7 +9,7 @@ import 'package:vix_roader/domain/domain_objects.dart';
 
 class AppRepository {
   late UserData userData;
-  late UserStatus userStatus;
+  late TripStatus tripStatus;
 
   RemoteRepository remoteRepo = new RemoteRepository();
   LocalRepository localRepo = new LocalRepository();
@@ -56,30 +56,32 @@ class AppRepository {
     return localUserData;
   }
 
-  Future<UserStatus> readLocalUserStatus() async {
-    UserStatus localUserStatus =
-        await localRepo.getLocalObject("user_status") as UserStatus;
-    this.userStatus = localUserStatus;
-    return localUserStatus;
+  Future<TripStatus> readLocalTripStatus() async {
+    TripStatus localTripStatus =
+        await localRepo.getLocalObject("trip_status") as TripStatus;
+    this.tripStatus = localTripStatus;
+    return localTripStatus;
   }
 
-  Future<bool> createLocalUserStatus() async {
+  Future<TripStatus> saveLocalTripStatus(newTripStatus) async {
+    this.tripStatus = newTripStatus;
+    await localRepo.saveLocalObject(this.tripStatus);
+
+    return this.tripStatus;
+  }
+
+  Future<bool> createLocalTripStatus() async {
     // Lee las credenciales del usuario almacenadas localmente
     UserCredentials localUserCredentials =
         await localRepo.getLocalObject("user_credentials") as UserCredentials;
     var email = localUserCredentials.get('email');
 
-    userStatus.set('email', email);
-    userStatus.set('onTravel', false);
-    userStatus.set('available', false);
-    userStatus.set('travelState', '');
-    userStatus.set('unitID', '');
-    userStatus.set('travelID', '');
-    userStatus.set('load', '');
-    userStatus.set('destination', '');
-    userStatus.set('customer', '');
+    tripStatus.set('email', email);
+    tripStatus.set('onTravel', false);
+    tripStatus.set('available', false);
+    tripStatus.set('tripStatus', 'paused');
 
-    var result = await localRepo.saveLocalObject(userStatus);
+    var result = await localRepo.saveLocalObject(tripStatus);
     return result;
   }
 

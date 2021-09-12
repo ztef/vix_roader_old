@@ -13,7 +13,17 @@ class StartTrip extends OpEvent {
   const StartTrip(this.tripData) : super();
 }
 
-class StopTrip extends OpEvent {}
+class PauseTrip extends OpEvent {
+  final pauseReason;
+  const PauseTrip(this.pauseReason) : super();
+}
+
+class UnPauseTrip extends OpEvent {}
+
+class StopTrip extends OpEvent {
+  final stopStatus;
+  const StopTrip(this.stopStatus) : super();
+}
 
 class AccidentReport extends OpEvent {}
 

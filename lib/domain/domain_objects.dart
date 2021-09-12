@@ -9,6 +9,6 @@ class UserData extends GenericDomainObject {
   UserData(objectId, payLoad) : super(objectId: objectId, payLoad: payLoad);
 }
 
-class UserStatus extends GenericDomainObject {
-  UserStatus(objectId, payLoad) : super(objectId: objectId, payLoad: payLoad);
+class TripStatus extends GenericDomainObject {
+  TripStatus(objectId, payLoad) : super(objectId: objectId, payLoad: payLoad);
 }

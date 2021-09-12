@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:vix_roader/bloc/op_bloc.dart';
 
 import 'package:vix_roader/events/op_events.dart';
 import 'package:vix_roader/widgets/form_widgets.dart';
 
-travelDataDialog(context, bloc) {
+startTravelDataDialog(context, bloc) {
   final _formKey = GlobalKey<FormBuilderState>();
 
   final tripController = new TripController(context, bloc);
@@ -55,9 +57,13 @@ class TripController {
   }
 }
 
-Future modalFullScreen(BuildContext context, bloc) {
+travelCourseDialog(context, bloc) {
+  return Container(child: Text('Status'));
+}
+
+Future modalFullScreen(BuildContext _context, childGenerator) {
   return showGeneralDialog(
-    context: context,
+    context: _context,
     barrierColor: Colors.black12.withOpacity(0.6), // Background color
     barrierDismissible: false,
     barrierLabel: 'Dialog',
@@ -75,7 +81,8 @@ Future modalFullScreen(BuildContext context, bloc) {
                   appBar: AppBar(
                     title: Text('DATOS DEL VIAJE'),
                   ),
-                  body: travelDataDialog(context, bloc),
+                  body: childGenerator(
+                      context, BlocProvider.of<OpBloc>(_context)),
                 )),
           ],
         ),

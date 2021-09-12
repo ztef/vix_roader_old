@@ -7,20 +7,15 @@ Widget userStatusWidget({required state}) {
   if (state is IdleState) {
     text = 'No Estás de Viaje Aún';
   } else if (state is TravelState) {
-    var destino = state.tripData['destiny'];
+    var destino = state.tripStatus.get('tripData')['destiny'];
     text = "Estás de Viaje a $destino";
   } else {
     text = 'Estás de Viaje';
   }
 
-  return ListTile(
-    title: Row(
-      children: <Widget>[
-        boxContainer(Text(text)),
-      ],
-    ),
-    onTap: onTap,
+  return Column(
+    children: <Widget>[
+      boxContainer(Text(text)),
+    ],
   );
 }
-
-onTap() {}
