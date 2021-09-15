@@ -68,15 +68,16 @@ Future<void> _pauseDialog(context, bloc) async {
       return AlertDialog(
           title: const Text('Motivo de Pausa'),
           content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
+            builder: (BuildContext _context, StateSetter setState) {
               return Container(
                   height: 600.0,
                   width: 300.0,
                   child: Column(
                     children: <Widget>[
-                      Text(PauseOptions.opciones[selectedPauseOption]),
-                      Expanded(
-                          child: ListView.builder(
+                      //Text(PauseOptions.opciones[selectedPauseOption]),
+                      //Expanded(
+                      //    child:
+                      ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: PauseOptions.opciones.length,
@@ -90,17 +91,21 @@ Future<void> _pauseDialog(context, bloc) async {
                                   icon: PauseOptions.iconos[key],
                                   onClicked: () => {
                                         setState(
-                                            () => {selectedPauseOption = key})
+                                            () => {selectedPauseOption = key}),
+                                        bloc.add(
+                                            PauseTrip(selectedPauseOption)),
+                                        Navigator.of(_context).pop()
                                       }),
                             ],
                           );
                         },
-                      )),
+                      ),
+                      //),
                       TextButton(
-                          child: const Text('OK'),
+                          child: const Text('Cancelar'),
                           onPressed: () {
-                            bloc.add(PauseTrip(selectedPauseOption));
-                            Navigator.of(context).pop();
+                            //bloc.add(PauseTrip(selectedPauseOption));
+                            Navigator.of(_context).pop();
                           }),
                     ],
                   ));

@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:vix_roader/domain/domain_objects.dart';
 class AppRepository {
   late UserData userData;
   late TripStatus tripStatus;
+
+  List tripLogDB = [];
 
   RemoteRepository remoteRepo = new RemoteRepository();
   LocalRepository localRepo = new LocalRepository();
@@ -63,11 +66,55 @@ class AppRepository {
     return localTripStatus;
   }
 
+  Future<void> readLocalTripLogDB() async {
+    // Solamente Lee la BD si está vacio
+    if (tripLogDB.length == 0) {
+      var tripId = tripStatus.get('tripCounter');
+      var tripLogRaw = await localRepo.getLocalLogDB(tripId);
+      print(tripLogRaw);
+      tripLogDB = tripLogRaw;
+    }
+  }
+
   Future<TripStatus> saveLocalTripStatus(newTripStatus) async {
     this.tripStatus = newTripStatus;
     await localRepo.saveLocalObject(this.tripStatus);
 
     return this.tripStatus;
+  }
+
+  Future<void> tripLog(logData) async {
+    var timeStamp = DateTime.now();
+    var logEntry = {'timeStamp': timeStamp, 'data': logData};
+
+    // Agrega en Memoria.
+    tripLogDB.add(logEntry);
+
+    // Persiste en localStorage :
+    await localRepo.saveLocalLogObject(logEntry);
+  }
+
+  // Regresa log del vieje actual
+  getTripLog() {
+    var tripId = tripStatus.get('tripCounter');
+    List thisTrip = [];
+    tripLogDB.forEach((element) {
+      if (element['data']['tripId'] == tripId) {
+        thisTrip.add(element);
+      }
+    });
+    return thisTrip;
+  }
+
+  sort(Map map) {
+    Map newmap = {};
+    for (int i = 0; i < map.length; i++) {
+      var k = map.entries.last.key;
+      var y = map.entries.last.value;
+      newmap[k] = y;
+      map.remove(k);
+    }
+    return newmap;
   }
 
   Future<bool> createLocalTripStatus() async {
@@ -80,6 +127,7 @@ class AppRepository {
     tripStatus.set('onTravel', false);
     tripStatus.set('available', false);
     tripStatus.set('tripStatus', 'paused');
+    tripStatus.set('tripCounter', 0);
 
     var result = await localRepo.saveLocalObject(tripStatus);
     return result;

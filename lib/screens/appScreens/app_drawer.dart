@@ -15,8 +15,8 @@ class AppDrawer extends StatelessWidget {
                   child: Column(children: <Widget>[
                 _createHeader(),
                 _createDrawerItem(
-                    icon: Icons.home,
-                    text: 'Inicio',
+                    icon: Icons.calendar_view_month_sharp,
+                    text: 'Mi Bitácora',
                     onTap: () => BlocProvider.of<AppBloc>(context)
                         .add(NavigateTo(HomeState()))),
                 _createDrawerItem(
@@ -25,10 +25,10 @@ class AppDrawer extends StatelessWidget {
                     onTap: () => BlocProvider.of<AppBloc>(context)
                         .add(NavigateTo(ProfileViewState()))),
                 _createDrawerItem(
-                    icon: Icons.travel_explore, text: 'Mis Viajes'),
+                    icon: Icons.travel_explore, text: 'Mis Viajes Anteriores'),
                 _createDrawerItem(
-                    icon: Icons.calendar_view_month,
-                    text: 'Mi Bitacora',
+                    icon: Icons.add_chart,
+                    text: 'Mis Estadísticas',
                     onTap: () => BlocProvider.of<AppBloc>(context)
                         .add(NavigateTo(AppState2()))),
                 Divider(),

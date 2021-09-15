@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vix_roader/bloc/op_bloc.dart';
 import 'package:vix_roader/events/op_events.dart';
-import 'package:vix_roader/screens/appScreens/trip_data_view.dart';
+import 'package:vix_roader/screens/appScreens/app_loading.dart';
+import 'package:vix_roader/screens/appScreens/start_travel_view.dart';
 import 'package:vix_roader/states/op_states.dart';
 import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 import 'package:vix_roader/widgets/box_container_widget.dart';
 import 'package:vix_roader/widgets/form_widgets.dart';
 import 'package:vix_roader/widgets/profile_photo_widget.dart';
+import 'package:vix_roader/widgets/trip_log_widget.dart';
+import 'package:vix_roader/widgets/trip_stats_widget.dart';
 import 'package:vix_roader/widgets/trip_status_widget.dart';
 import 'package:vix_roader/widgets/user_data_widget.dart';
 import 'package:vix_roader/widgets/user_status_widget.dart';
@@ -18,7 +21,7 @@ class OpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OpBloc, OpState>(builder: (context, state) {
-      return OpPanel(state);
+      return state is LoadingState ? LoadingView() : OpPanel(state);
     });
   }
 }
@@ -29,20 +32,19 @@ class OpPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userData =
-        RepositoryProvider.of<AppRepository>(context).getUserDataObject();
+    //var userData = RepositoryProvider.of<AppRepository>(context).getUserDataObject();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('BIENVENIDO'),
+        title: Text('BITACORA DE VIAJE'),
       ),
       drawer: Drawer(child: AppDrawer()),
       body: Center(
         child: Column(children: [
           // Foto del Profile
-          ProfilePhotoWidget(imagePath: 'foto.jpg', isEdit: false, bloc: null),
+          //ProfilePhotoWidget(imagePath: 'foto.jpg', isEdit: false, bloc: null),
           // Nombre del Usuario
-          userDataWidget(userData),
+          //userDataWidget(userData),
 
           // Tarjeta de Estado : En Viaje/No en Viaje.
           userStatusWidget(state: state),
@@ -53,9 +55,20 @@ class OpPanel extends StatelessWidget {
               state: state,
               bloc: BlocProvider.of<OpBloc>(context)),
 
-          // Tarjeta de Estadísticas
-          boxContainer(
-              Text('Viajes Registrados : 32 , Horas de conducción : 245')),
+          // Log
+
+          tripLogWidget(
+            context: context,
+          ),
+
+          Container(child: Text('')),
+
+          (state is TravelState)
+              ? currentTripStatsWidget(
+                  state: state,
+                  context: context,
+                )
+              : Container(),
         ]),
       ),
       floatingActionButton: _nextAction(context, state),

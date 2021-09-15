@@ -7,6 +7,8 @@ import 'package:vix_roader/domain/generic_domain_object.dart';
 //import 'package:vix_roader/domain/domain_objects.dart';
 
 class LocalRepository {
+  late String logFileName;
+
   Future<bool> saveLocalObject(GenericDomainObject localObject) async {
     final SharedPreferences? prefs = await SharedPreferences.getInstance();
 
@@ -16,10 +18,6 @@ class LocalRepository {
         localObject.objectId,
         json.encode(js, toEncodable: (v) {
           if (v is File) {
-            //final appDir = await getApplicationDocumentsDirectory();
-            //final fileName = '_photo.png';
-            //final savedImage = await v.copy('${appDir.path}/$fileName');
-
             return {};
           } else
             return v.toJson();
@@ -29,6 +27,50 @@ class LocalRepository {
     print(localObject);
 
     return opStatus;
+  }
+
+  // Agrega logEntry a logFile.txt
+  Future<void> saveLocalLogObject(logEntry) async {
+    logFileName = await getFilePath('log4File.json');
+
+    appendRecord2File(
+        json.encode(logEntry, toEncodable: myDateSerializer), logFileName);
+  }
+
+  dynamic myDateSerializer(dynamic object) {
+    if (object is DateTime) {
+      //return object.toIso8601String();
+      return object.toString();
+    }
+    return object;
+  }
+
+  // Lee archivo de logs (logFile.txt) y restaura solo
+  // los eventos del tripId
+  Future getLocalLogDB(tripId) async {
+    var db = [];
+    List thisTrip = [];
+
+    logFileName = await getFilePath('log4File.json');
+    if (await File(logFileName).exists()) {
+      var rawData = await readFile(logFileName);
+      db = json.decode('[' + rawData.replaceFirst(",", "") + "]",
+          reviver: (k, v) {
+        if (k == 'timeStamp') return DateTime.parse(v as String);
+        return v;
+      });
+      // Deja pasar solo los Entries con tripID
+
+      db.forEach((element) {
+        if (element['data']['tripId'] == tripId) {
+          thisTrip.add(element);
+        }
+      });
+    }
+
+    // Procesa y Filtra
+
+    return thisTrip;
   }
 
   Future getLocalObject(objectId) async {
@@ -83,6 +125,28 @@ class LocalRepository {
     print("LOCAL_REPO: Guardando Catalogo ");
 
     return opStatus;
+  }
+
+  // Funciones basicas de Archivo :
+
+  Future<String> getFilePath(String fileName) async {
+    Directory appDocumentsDirectory =
+        await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/$fileName'; // 3
+    return filePath;
+  }
+
+  void appendRecord2File(String record, _file) async {
+    File file = File(_file); // 1
+    file.writeAsString("," + record, mode: FileMode.writeOnlyAppend); // 2
+  }
+
+  Future<String> readFile(_file) async {
+    File file = File(_file); // 1
+    String fileContent = await file.readAsString(); // 2
+    print('File Content: $fileContent');
+    return fileContent;
   }
 }
 

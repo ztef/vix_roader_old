@@ -56,13 +56,6 @@ class ProfilePhotoWidget extends StatelessWidget {
               fit: BoxFit.cover,
               width: 128,
               height: 128,
-              /*child: InkWell(onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return photoDialog(context, bloc);
-                    });
-              }),*/
             );
           } else {
             return new Container();

@@ -75,15 +75,16 @@ Future modalFullScreen(BuildContext _context, childGenerator) {
       return SizedBox.expand(
         child: Column(
           children: <Widget>[
-            Expanded(
-                flex: 5,
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Text('DATOS DEL VIAJE'),
-                  ),
-                  body: childGenerator(
-                      context, BlocProvider.of<OpBloc>(_context)),
-                )),
+            //Expanded(
+            //flex: 5,
+            //    child:
+            Scaffold(
+              appBar: AppBar(
+                title: Text('DATOS DEL VIAJE'),
+              ),
+              body: childGenerator(context, BlocProvider.of<OpBloc>(_context)),
+            ),
+            //),
           ],
         ),
       );

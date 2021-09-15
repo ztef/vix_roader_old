@@ -13,22 +13,28 @@ class OpBloc extends Bloc<OpEvent, OpState> {
   late TripStatus tripStatus;
   var tripData;
   var pauseReason;
+  var stopStatus;
 
   // Registra el Repositorio central de la app y setea el estado Inicial
-  OpBloc(this.appRepo) : super(IdleState());
+  OpBloc(this.appRepo) : super(LoadingState());
 
   @override
   Stream<OpState> mapEventToState(OpEvent event) async* {
+    print('OP BLOC : Inicia Operación');
+
     if (event is StartTrip) {
       this.tripData = event.tripData;
     }
     if (event is PauseTrip) {
       this.pauseReason = event.pauseReason;
     }
+    if (event is StopTrip) {
+      this.stopStatus = event.stopStatus;
+    }
 
     switch (event.runtimeType) {
       case StartingOp:
-        print('OP BLOC : Inicia Operación');
+
         // Leyendo estatus :
         tripStatus = await appRepo.readLocalTripStatus();
 
@@ -43,6 +49,9 @@ class OpBloc extends Bloc<OpEvent, OpState> {
         } else {
           yield IdleState();
         }
+
+        await appRepo.readLocalTripLogDB();
+
         break;
 
       case StartTrip:
@@ -51,20 +60,44 @@ class OpBloc extends Bloc<OpEvent, OpState> {
         this.tripStatus.set('available', false);
         this.tripStatus.set('moveStatus', 'paused');
         this.tripStatus.set('pauseReason', '');
+        var tripId = this.tripStatus.getNumber('tripCounter') + 1;
+        this.tripStatus.set('tripCounter', tripId);
+        this.tripStatus.set('tripId', tripId);
 
         await appRepo.saveLocalTripStatus(this.tripStatus);
+        await appRepo.tripLog(
+            {'tripId': tripId, 'action': 'StartTrip', 'tripData': tripData});
 
         yield TravelState(this.tripStatus);
         break;
 
       case StopTrip:
+        this.tripStatus.set('onTravel', false);
+        this.tripStatus.set('available', false);
+        this.tripStatus.set('moveStatus', 'paused');
+        this.tripStatus.set('pauseReason', '');
+        await appRepo.saveLocalTripStatus(this.tripStatus);
+
+        var tripId = this.tripStatus.getNumber('tripId');
+        await appRepo.tripLog({
+          'tripId': tripId,
+          'action': 'StopTrip',
+          'stopReason': this.stopStatus,
+        });
+
         yield IdleState();
         break;
       case PauseTrip:
         this.tripStatus.set('moveStatus', 'paused');
         this.tripStatus.set('pauseReason', this.pauseReason);
 
+        var tripId = this.tripStatus.getNumber('tripId');
         await appRepo.saveLocalTripStatus(this.tripStatus);
+        await appRepo.tripLog({
+          'tripId': tripId,
+          'action': 'PauseTrip',
+          'pauseReason': this.pauseReason
+        });
 
         yield TravelState(this.tripStatus);
         break;
@@ -72,10 +105,13 @@ class OpBloc extends Bloc<OpEvent, OpState> {
         this.tripStatus.set('moveStatus', 'route');
         this.tripStatus.set('pauseReason', '');
 
+        var tripId = this.tripStatus.getNumber('tripId');
         await appRepo.saveLocalTripStatus(this.tripStatus);
+        await appRepo.tripLog({'tripId': tripId, 'action': 'UnPauseTrip'});
 
         yield TravelState(this.tripStatus);
         break;
+      default:
     }
   }
 }

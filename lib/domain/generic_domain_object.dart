@@ -27,6 +27,13 @@ class GenericDomainObject {
       return payLoad[field];
   }
 
+  getNumber(field) {
+    if (payLoad[field] == null) {
+      return 0;
+    } else
+      return payLoad[field];
+  }
+
   getRecord() {
     return payLoad;
   }

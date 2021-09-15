@@ -5,6 +5,7 @@ import 'package:vix_roader/events/app_events.dart';
 import 'package:vix_roader/states/app_states.dart';
 
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
+import 'package:vix_roader/widgets/photo_widget.dart';
 import 'package:vix_roader/widgets/profile_photo_widget.dart';
 import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
@@ -27,7 +28,8 @@ class ProfileView extends StatelessWidget {
       drawer: Drawer(child: AppDrawer() // Populate the Drawer in the next step.
           ),
       body: ListView(children: [
-        ProfilePhotoWidget(imagePath: 'foto.jpg', isEdit: false, bloc: null),
+        //ProfilePhotoWidget(imagePath: 'foto.jpg', isEdit: false, bloc: null),
+        photoWidget(),
         const SizedBox(height: 24),
         userDataWidget(user),
         const SizedBox(height: 24),

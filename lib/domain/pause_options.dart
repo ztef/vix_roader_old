@@ -22,7 +22,7 @@ class PauseOptions {
     'downloading': Icons.arrow_circle_down,
     'rest': Icons.hotel,
     'food': Icons.restaurant,
-    'repair': Icons.error,
+    'repair': Icons.bus_alert,
     'ret': Icons.dangerous,
     'police': Icons.local_police,
   };

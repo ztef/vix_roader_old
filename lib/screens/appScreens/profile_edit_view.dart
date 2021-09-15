@@ -31,15 +31,6 @@ class ProfileEditView extends StatelessWidget {
                 imagePath: 'foto.jpg',
                 isEdit: true,
                 bloc: bloc,
-                /*
-                onClicked: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return photoDialog(context, bloc);
-                      });
-                },
-                */
               ));
             } else
               return Container();
@@ -80,7 +71,7 @@ class ProfileEditView extends StatelessWidget {
         ]));
   }
 
-  Widget _dateFieldWidget(context, _fieldName) {
+  /*Widget _dateFieldWidget(context, _fieldName) {
     return FormBuilderDateTimePicker(
       name: _fieldName,
       // onChanged: _onChanged,
@@ -93,6 +84,7 @@ class ProfileEditView extends StatelessWidget {
       enabled: true,
     );
   }
+*/
 
   Widget _okDialog(context) {
     final bloc = BlocProvider.of<AppBloc>(context);

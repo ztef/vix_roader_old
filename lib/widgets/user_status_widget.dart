@@ -4,11 +4,14 @@ import 'package:vix_roader/states/op_states.dart';
 
 Widget userStatusWidget({required state}) {
   final text;
+  var tripNumber = 0;
+
   if (state is IdleState) {
     text = 'No Estás de Viaje Aún';
   } else if (state is TravelState) {
     var destino = state.tripStatus.get('tripData')['destiny'];
     text = "Estás de Viaje a $destino";
+    tripNumber = state.tripStatus.get('tripCounter');
   } else {
     text = 'Estás de Viaje';
   }
@@ -16,6 +19,7 @@ Widget userStatusWidget({required state}) {
   return Column(
     children: <Widget>[
       boxContainer(Text(text)),
+      //Text('Número de Viaje : $tripNumber'),
     ],
   );
 }
