@@ -55,12 +55,7 @@ Widget formFieldTypeAheadWidget(context, _fieldName, label, values) {
 Widget submitButtonWidget(label, context, _formKey, callBack) {
   return MaterialButton(
     color: Theme.of(context).accentColor,
-    child: Expanded(
-        flex: 5,
-        child: Text(
-          label,
-          style: TextStyle(color: Colors.white),
-        )),
+    child: Text(label),
     onPressed: () {
       _formKey.currentState!.save();
       if (_formKey.currentState!.validate()) {

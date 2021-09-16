@@ -10,7 +10,8 @@ import 'package:vix_roader/states/profile_states.dart';
 import 'package:vix_roader/states/app_states.dart';
 import 'package:vix_roader/events/app_events.dart';
 import 'package:vix_roader/widgets/form_widgets.dart';
-import 'package:vix_roader/widgets/profile_photo_widget.dart';
+import 'package:vix_roader/widgets/photo_widget.dart';
+//import 'package:vix_roader/widgets/profile_photo_widget.dart';
 
 class ProfileEditView extends StatelessWidget {
   final _formKey = GlobalKey<FormBuilderState>();
@@ -27,11 +28,15 @@ class ProfileEditView extends StatelessWidget {
         body: ListView(children: [
           BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
             if ((state is NewPhoto) || (state is EditState)) {
-              return (ProfilePhotoWidget(
+              //return Container();
+              return (photoWidget(context, true, bloc));
+              /*ProfilePhotoWidget(
                 imagePath: 'foto.jpg',
                 isEdit: true,
                 bloc: bloc,
-              ));
+              )
+              */
+
             } else
               return Container();
           }),

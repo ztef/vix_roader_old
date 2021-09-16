@@ -29,9 +29,12 @@ class ProfileView extends StatelessWidget {
           ),
       body: ListView(children: [
         //ProfilePhotoWidget(imagePath: 'foto.jpg', isEdit: false, bloc: null),
-        photoWidget(),
+
+        photoWidget(context, false, null),
+
         const SizedBox(height: 24),
         userDataWidget(user),
+
         const SizedBox(height: 24),
         Center(child: buildUpdateButton(context)),
         const SizedBox(height: 24),
