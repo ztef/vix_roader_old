@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vix_roader/bloc/op_bloc.dart';
-import 'package:vix_roader/events/op_events.dart';
 import 'package:vix_roader/screens/appScreens/app_loading.dart';
 import 'package:vix_roader/screens/appScreens/start_travel_view.dart';
 import 'package:vix_roader/states/op_states.dart';
-import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
-import 'package:vix_roader/widgets/box_container_widget.dart';
-import 'package:vix_roader/widgets/form_widgets.dart';
-import 'package:vix_roader/widgets/profile_photo_widget.dart';
+import 'package:vix_roader/widgets/trip_history_widget.dart';
 import 'package:vix_roader/widgets/trip_log_widget.dart';
 import 'package:vix_roader/widgets/trip_stats_widget.dart';
 import 'package:vix_roader/widgets/trip_status_widget.dart';
-import 'package:vix_roader/widgets/user_data_widget.dart';
 import 'package:vix_roader/widgets/user_status_widget.dart';
 
 // Operations View
@@ -49,20 +44,23 @@ class OpPanel extends StatelessWidget {
           // Tarjeta de Estado : En Viaje/No en Viaje.
           userStatusWidget(state: state),
 
-          // Estado del Viaje
           tripStatusWidget(
               context: context,
               state: state,
               bloc: BlocProvider.of<OpBloc>(context)),
 
-          // Log
+          // Log del Viaje Actual
+          (state is TravelState)
+              ? tripLogWidget(
+                  context: context,
+                )
+              : tripHistoryWidget(context: context),
 
-          tripLogWidget(
-            context: context,
-          ),
+          // Log
 
           Container(child: Text('')),
 
+          // Estadísticas del Viaje Actual
           (state is TravelState)
               ? currentTripStatsWidget(
                   state: state,

@@ -1,6 +1,5 @@
-import 'dart:collection';
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,7 +11,11 @@ class AppRepository {
   late UserData userData;
   late TripStatus tripStatus;
 
+  final _logFileName = "vr_log.json";
+  final _historyFileName = "vr_history.json";
+
   List tripLogDB = [];
+  List tripHistoryDB = [];
 
   RemoteRepository remoteRepo = new RemoteRepository();
   LocalRepository localRepo = new LocalRepository();
@@ -70,9 +73,18 @@ class AppRepository {
     // Solamente Lee la BD si está vacio
     if (tripLogDB.length == 0) {
       var tripId = tripStatus.get('tripCounter');
-      var tripLogRaw = await localRepo.getLocalLogDB(tripId);
+      var tripLogRaw = await localRepo.getLocalLogDB(tripId, _logFileName);
       print(tripLogRaw);
       tripLogDB = tripLogRaw;
+    }
+  }
+
+  Future<void> readLocalTripHistoryDB() async {
+    // Solamente Lee la BD si está vacio
+    if (tripHistoryDB.length == 0) {
+      var tripHistoryRaw = await localRepo.getLocalHistoryDB(_historyFileName);
+      print(tripHistoryRaw);
+      tripHistoryDB = tripHistoryRaw;
     }
   }
 
@@ -83,6 +95,14 @@ class AppRepository {
     return this.tripStatus;
   }
 
+  Future<void> addTripToHistory(lastTrip) async {
+    // Agrega en Memoria.
+    tripHistoryDB.add(lastTrip);
+
+    // Persiste en localStorage :
+    await localRepo.appendPersistedLocalObject(lastTrip, _historyFileName);
+  }
+
   Future<void> tripLog(logData) async {
     var timeStamp = DateTime.now();
     var logEntry = {'timeStamp': timeStamp, 'data': logData};
@@ -91,7 +111,7 @@ class AppRepository {
     tripLogDB.add(logEntry);
 
     // Persiste en localStorage :
-    await localRepo.saveLocalLogObject(logEntry);
+    await localRepo.appendPersistedLocalObject(logEntry, _logFileName);
   }
 
   // Regresa log del vieje actual
@@ -104,6 +124,11 @@ class AppRepository {
       }
     });
     return thisTrip;
+  }
+
+  // Regresa historial de viajes
+  getTripHistory() {
+    return this.tripHistoryDB;
   }
 
   sort(Map map) {
@@ -149,6 +174,7 @@ class AppRepository {
     return result;
   }
 
+/*
   static Future<FileImage> getLocalImage() async {
     imageCache?.clear();
 
@@ -166,6 +192,31 @@ class AppRepository {
     FileImage fi = FileImage(imageFile);
 
     return fi;
+  }
+*/
+
+  static Future<Image> getLocalImage() async {
+    Directory appDir = await _getAppDirectory();
+    String appDocumentsPath = appDir.path; // 2
+    String filePath = '$appDocumentsPath/foto.jpg'; // 3
+    var imageFile = File(filePath);
+
+    if (await File(filePath).exists()) {
+      print("File exists");
+    } else {
+      print("File don't exists");
+    }
+
+    Uint8List bytes = imageFile.readAsBytesSync();
+    //Image image = Image.memory(bytes);
+
+    Image image = new Image.memory(
+      bytes,
+      width: 128,
+      height: 128,
+    );
+
+    return image;
   }
 
   static Future<void> saveLocalImage(XFile image) async {

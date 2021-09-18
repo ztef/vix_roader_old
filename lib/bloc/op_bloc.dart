@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:vix_roader/bloc/time_logic.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:vix_roader/events/op_events.dart';
 import 'package:vix_roader/states/op_states.dart';
@@ -38,6 +39,9 @@ class OpBloc extends Bloc<OpEvent, OpState> {
         // Leyendo estatus :
         tripStatus = await appRepo.readLocalTripStatus();
 
+        await appRepo.readLocalTripLogDB();
+        await appRepo.readLocalTripHistoryDB();
+
         if ((tripStatus.get('onTravel') == '')) {
           print('OP BLOC: No hay Estatus. Creando Registro');
           var result = await appRepo.createLocalTripStatus();
@@ -49,8 +53,6 @@ class OpBloc extends Bloc<OpEvent, OpState> {
         } else {
           yield IdleState();
         }
-
-        await appRepo.readLocalTripLogDB();
 
         break;
 
@@ -83,6 +85,17 @@ class OpBloc extends Bloc<OpEvent, OpState> {
           'tripId': tripId,
           'action': 'StopTrip',
           'stopReason': this.stopStatus,
+        });
+
+        var times = getAcumulatedDriveTime(appRepo.getTripLog());
+        var dates = getTripDates(this.tripStatus);
+        this.tripData = this.tripStatus.get('tripData');
+        await appRepo.addTripToHistory({
+          'tripId': tripId,
+          'stopReason': this.stopStatus,
+          'tripDates': dates,
+          'tripTimes': times,
+          'tripData': this.tripData,
         });
 
         yield IdleState();

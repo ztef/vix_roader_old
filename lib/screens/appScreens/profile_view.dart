@@ -6,7 +6,7 @@ import 'package:vix_roader/states/app_states.dart';
 
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
 import 'package:vix_roader/widgets/photo_widget.dart';
-import 'package:vix_roader/widgets/profile_photo_widget.dart';
+
 import 'package:vix_roader/repositories/app_repository.dart';
 import 'package:vix_roader/domain/domain_objects.dart';
 import 'package:vix_roader/widgets/numbers_widget.dart';

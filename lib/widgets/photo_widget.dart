@@ -1,30 +1,22 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:vix_roader/bloc/profile_bloc.dart';
 import 'package:vix_roader/events/profile_events.dart';
 import 'package:vix_roader/repositories/app_repository.dart';
 
 Widget photoWidget(context, isEdit, bloc) {
-  imageCache?.clear();
-  File file = File('/data/user/0/com.example.vix_roader/app_flutter/foto.jpg');
-
-  Uint8List bytes = file.readAsBytesSync();
-  //Image image = Image.memory(bytes);
-
-  Image image = new Image.memory(
-    bytes,
-    width: 128,
-    height: 128,
-  );
+  Future<Image> image = AppRepository.getLocalImage();
 
   return Center(
     child: Stack(
       children: [
-        foto(image),
+        FutureBuilder(
+            future: image,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return foto(snapshot.data);
+              } else
+                return Container();
+            }),
         Positioned(
           bottom: 0,
           right: 0,

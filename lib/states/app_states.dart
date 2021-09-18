@@ -10,6 +10,8 @@ class HomeState extends AppState {}
 
 class QuitState extends AppState {}
 
+class HistoryViewState extends AppState {}
+
 class AppState1 extends AppState {}
 
 class AppState2 extends AppState {}

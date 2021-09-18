@@ -8,6 +8,7 @@ import 'package:vix_roader/domain/generic_domain_object.dart';
 
 class LocalRepository {
   late String logFileName;
+  late String historyFileName;
 
   Future<bool> saveLocalObject(GenericDomainObject localObject) async {
     final SharedPreferences? prefs = await SharedPreferences.getInstance();
@@ -29,29 +30,66 @@ class LocalRepository {
     return opStatus;
   }
 
-  // Agrega logEntry a logFile.txt
-  Future<void> saveLocalLogObject(logEntry) async {
-    logFileName = await getFilePath('log4File.json');
+  // Agrega un record a fileName
+  Future<void> appendPersistedLocalObject(record, fileName) async {
+    var targetFile = await getFilePath(fileName);
 
     appendRecord2File(
-        json.encode(logEntry, toEncodable: myDateSerializer), logFileName);
+        json.encode(record, toEncodable: myDateSerializer), targetFile);
   }
 
   dynamic myDateSerializer(dynamic object) {
-    if (object is DateTime) {
-      //return object.toIso8601String();
+    if ((object is DateTime) || (object is Duration)) {
       return object.toString();
+    } else
+      return object;
+  }
+
+  Future getLocalHistoryDB(fileName) async {
+    var db = [];
+
+    var targetFileName = await getFilePath(fileName);
+    if (await File(targetFileName).exists()) {
+      var rawData = await readFile(targetFileName);
+      db = json.decode('[' + rawData.replaceFirst(",", "") + "]",
+          reviver: (k, v) {
+        if (k == 'timeStamp') return DateTime.parse(v as String);
+        if (k == 'driveTime') return parseDuration(v as String);
+        if (k == 'pauseTime') return parseDuration(v as String);
+
+        return v;
+      });
+      // Deja pasar solo los Entries con tripID
+
     }
-    return object;
+
+    // Procesa y Filtra
+
+    return db;
+  }
+
+  Duration parseDuration(String s) {
+    int hours = 0;
+    int minutes = 0;
+    int micros;
+    List<String> parts = s.split(':');
+    if (parts.length > 2) {
+      hours = int.parse(parts[parts.length - 3]);
+    }
+    if (parts.length > 1) {
+      minutes = int.parse(parts[parts.length - 2]);
+    }
+    micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
+    return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 
   // Lee archivo de logs (logFile.txt) y restaura solo
   // los eventos del tripId
-  Future getLocalLogDB(tripId) async {
+  Future getLocalLogDB(tripId, fileName) async {
     var db = [];
     List thisTrip = [];
 
-    logFileName = await getFilePath('log4File.json');
+    logFileName = await getFilePath(fileName);
     if (await File(logFileName).exists()) {
       var rawData = await readFile(logFileName);
       db = json.decode('[' + rawData.replaceFirst(",", "") + "]",

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:timer_builder/timer_builder.dart';
+import 'package:vix_roader/bloc/time_logic.dart';
 import 'package:vix_roader/repositories/app_repository.dart';
-
-import 'package:vix_roader/states/op_states.dart';
 
 Widget currentTripStatsWidget({required state, required context}) {
   var tripNumber = 0;
@@ -12,7 +11,9 @@ Widget currentTripStatsWidget({required state, required context}) {
   List tripLog = RepositoryProvider.of<AppRepository>(context).getTripLog();
 
   var startedAt = getStartTravelTime(tripLog);
-  var driveTime = getDriveTime(tripLog);
+  var times = getAcumulatedDriveTime(tripLog);
+  var driveTime = times['driveTime'];
+  var pauseTime = times['pauseTime'];
   var timeStamp = DateTime.now();
 
   tripNumber = state.tripStatus.get('tripCounter');
@@ -42,12 +43,16 @@ Widget currentTripStatsWidget({required state, required context}) {
                       "${timeFormat(Duration(seconds: driveTime.inSeconds + DateTime.now().difference(timeStamp).inSeconds))}");
                 })
               : Text(timeFormat(driveTime)),
+          Text('Tiempo de Pausa :'),
+          state.tripStatus.get('moveStatus') == 'paused'
+              ? TimerBuilder.periodic(Duration(seconds: 1), builder: (context) {
+                  return Text(
+                      "${timeFormat(Duration(seconds: pauseTime.inSeconds + DateTime.now().difference(timeStamp).inSeconds))}");
+                })
+              : Text(timeFormat(pauseTime)),
         ],
       ));
 }
-
-// Formatea Duration como hh:mm:ss
-timeFormat(Duration d) => d.toString().split('.').first.padLeft(8, "0");
 
 // Regresa el timeStamp del ultimo StartTrip
 DateTime getStartTravelTime(List tripLog) {
@@ -69,6 +74,7 @@ DateTime getStartTravelTime(List tripLog) {
   return _startTime;
 }
 
+/*
 // Calcula el Tiempo de Conduccion Acumulado :
 Duration getDriveTime(List tripLog) {
   int i = 0;
@@ -111,16 +117,7 @@ Duration getDriveTime(List tripLog) {
 
   return totalTime;
 }
-
-
-
-
-
-
-
-
-
-
+*/
 
 /*getTotalTravelTime(List tripLog) {
   var t = 0;

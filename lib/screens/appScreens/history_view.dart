@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:vix_roader/screens/appScreens/app_drawer.dart';
+import 'package:vix_roader/widgets/trip_history_widget.dart';
 
-class Option1 extends StatelessWidget {
-  static const String routeName = '/option1';
-
+class HistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('OPCION 1'),
+        title: Text('Historial de Viajes'),
       ),
       drawer: Drawer(child: AppDrawer() // Populate the Drawer in the next step.
           ),
-      body: Center(
-        child: Text('Opcion 1'),
-      ),
+      body: Column(children: [
+        Text(''),
+        tripHistoryWidget(context: context),
+      ]),
     );
   }
 }

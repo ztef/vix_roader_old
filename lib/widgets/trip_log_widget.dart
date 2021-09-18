@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:vix_roader/domain/pause_options.dart';
 import 'package:vix_roader/domain/trip_states.dart';
 import 'package:vix_roader/repositories/app_repository.dart';
-import 'package:vix_roader/widgets/box_container_widget.dart';
-import 'package:vix_roader/states/op_states.dart';
 
 Widget tripLogWidget({required context}) {
   List tripLog = RepositoryProvider.of<AppRepository>(context).getTripLog();
